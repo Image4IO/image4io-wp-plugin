@@ -1,0 +1,21 @@
+{
+  "name" : "image4io/image4io-plugin",
+  "description": "Tools for cropping, uploading to S3, serving through Imgix",
+  "type": "wordpress-plugin",
+  "license": "LGPL-3.0-or-later",
+  "keywords": ["image4io","image","cdn", "image-optimization" ,"wordpress"],
+  "repositories": [
+  ],
+  "authors": [
+    {
+      "name": "Gokhan Kocyigit",
+      "email": "gokhankocyigit@image4.io"
+    }
+  ],
+  "require" : {
+    "image4io/image4iophp-sdk":"0.0.1"
+  },
+  "autoload":{
+    "psr-4":{"Inc\\":"./inc"}
+  }
+}
