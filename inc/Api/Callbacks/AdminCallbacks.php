@@ -21,12 +21,12 @@ class AdminCallbacks extends BaseController{
     }
 
     public function image4ioApiKey(){
-        $value=esc_attr(get_option('apiKey'));
-        echo '<input type="text" class="regular-text" name="apiKey" value="' . $value . '" placeholder="Api Key">';
+        $value=esc_attr(get_option('api_key'));
+        echo '<input type="text" class="regular-text" name="api_key" value="' . $value . '" placeholder="Api Key">';
     }
 
     public function image4ioApiSecret(){
-        $value=esc_attr(get_option('apiSecret'));
-        echo '<input type="password" class="regular-text" name="apiSecret" value"' . $value . '" placeholder="Api Secret">';
+        $value=esc_attr(get_option('api_secret'));
+        echo '<input type="password" class="regular-text" name="api_secret" value="' . $value . '" placeholder="Api Secret">';
     }
 }

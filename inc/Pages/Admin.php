@@ -63,9 +63,14 @@
 	{
 		$args = array(
 			array(
-				'option_group' => 'admin_options_group',
-				'option_name' => 'api_settings',
-				'callback' => array( $this->callbacks, 'adminOptionGroup' )
+				'option_group' => 'dashboard_options_group',
+				'option_name' => 'api_key',
+				'callback' => array( $this->callbacks, 'dashboardOptionGroup' )
+			),
+			array(
+				'option_group' => 'dashboard_options_group',
+				'option_name' => 'api_secret',
+				'callback' => array( $this->callbacks, 'dashboardOptionGroup' )
 			)
 		);
 
@@ -76,7 +81,7 @@
 	{
 		$args = array(
 			array(
-				'id' => 'image4io_admin_index',
+				'id' => 'image4io_admin_dashboard_index',
 				'title' => 'Settings',
 				'callback' => array( $this->callbacks, 'dashboardSettingsSection' ),
 				'page' => 'image4io_plugin'
@@ -94,7 +99,7 @@
 				'title' => 'Image4io Api Key',
 				'callback' => array( $this->callbacks, 'image4ioApiKey' ),
 				'page' => 'image4io_plugin',
-				'section' => 'image4io_admin_index',
+				'section' => 'image4io_admin_dashboard_index',
 				'args' => array(
 					'label_for' => 'api_key',
 					'class' => 'example-class'
@@ -105,7 +110,7 @@
 				'title' => 'Image4io Api Secret',
 				'callback' => array( $this->callbacks, 'image4ioApiSecret' ),
 				'page' => 'image4io_plugin',
-				'section' => 'image4io_admin_index',
+				'section' => 'image4io_admin_dashboard_index',
 				'args' => array(
 					'label_for' => 'api_secret',
 					'class' => 'example-class'
