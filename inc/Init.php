@@ -5,12 +5,15 @@
 
 namespace Inc;
 
+use Inc\Api\SettingsApi;
+
 final class Init{
     public static function get_services(){
         return [
             Pages\Admin::class,
             Base\Enqueue::class,
-            Base\SettingsLink::class
+            Base\SettingsLink::class,
+            Pages\Console::class
         ];
     }
 
@@ -21,6 +24,7 @@ final class Init{
                 $service->register();
             }
         }
+        SettingsApi::instance()->register();
     }
 
     private static function instantiate($class){

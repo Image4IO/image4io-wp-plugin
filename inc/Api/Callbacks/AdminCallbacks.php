@@ -12,6 +12,10 @@ class AdminCallbacks extends BaseController{
         return require_once("$this->plugin_path/templates/admin.php");
     }
 
+    public function adminConsole(){
+        return require_once("$this->plugin_path/templates/console.php");
+    }
+
     public function adminOptionGroup($input){
         return $input;
     }

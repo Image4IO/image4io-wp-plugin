@@ -5,12 +5,25 @@
 
 namespace Inc\Api;
 
-class SettingsApi {
+final class SettingsApi {
     public $admin_pages = array();
     public $admin_subpages = array();
     public $settings = array();
     public $sections = array();
-    public $fields = array();
+	public $fields = array();
+	private static $instance;
+
+	public static function instance()
+    {
+        
+        if ( !isset( self::$instance ) ) {
+            $class = __CLASS__;
+            self::$instance = new $class();
+            //self::$instance->setup();
+        }
+        
+        return self::$instance;
+    }
 
     public function register(){
         if(!empty($this->admin_pages)){
@@ -63,8 +76,8 @@ class SettingsApi {
 			add_menu_page( $page['page_title'], $page['menu_title'], $page['capability'], $page['menu_slug'], $page['callback'], $page['icon_url'], $page['position'] );
 		}
 
-		foreach ( $this->admin_subpages as $page ) {
-			add_submenu_page( $page['parent_slug'], $page['page_title'], $page['menu_title'], $page['capability'], $page['menu_slug'], $page['callback'] );
+		foreach ( $this->admin_subpages as $subpage ) {
+			add_submenu_page( $subpage['parent_slug'], $subpage['page_title'], $subpage['menu_title'], $subpage['capability'], $subpage['menu_slug'], $subpage['callback'] );
 		}
     }
     

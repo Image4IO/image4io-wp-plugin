@@ -14,20 +14,18 @@
 	public $settings;
 	public $callbacks;
 	public $pages = array();
-    public $subpages = array();
     
      public function register(){
-         $this->settings=new SettingsApi();
+         $this->settings=SettingsApi::instance();
          $this->callbacks=new AdminCallbacks();
 
          $this->setPages();
-         $this->setSubpages();
          
          $this->setSettings();
          $this->setSections();
          $this->setFields();
 
-         $this->settings->addPages($this->pages)->withSubPage('Dashboard')->addSubPages($this->subpages)->register();
+		 $this->settings->addPages($this->pages)->withSubPage('Dashboard');
      }
      
      public function setPages() 
@@ -40,22 +38,8 @@
                 'menu_slug' => 'image4io_plugin', 
 				'callback' => array( $this->callbacks, 'adminDashboard' ), 
 				'icon_url' => 'dashicons-store', 
-				'position' => 110
+				'position' => 120
 			)
-		);
-	}
-
-	public function setSubpages()
-	{
-		$this->subpages = array(
-			// array(
-			// 	'parent_slug' => 'image4io_plugin', 
-			// 	'page_title' => 'Custom Post Types', 
-			// 	'menu_title' => 'CPT', 
-			// 	'capability' => 'manage_options', 
-			// 	'menu_slug' => 'image4io_cpt', 
-			// 	'callback' => array( $this->callbacks, 'adminCpt' )
-			// )
 		);
 	}
 
