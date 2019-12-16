@@ -8,6 +8,7 @@
  use Inc\Api\SettingsApi;
  use Inc\Base\BaseController;
  use Inc\Api\Callbacks\AdminCallbacks;
+ use Inc\Api\Image4IOManager;
 
  class Admin extends BaseController {
 
@@ -17,7 +18,9 @@
     
      public function register(){
          $this->settings=SettingsApi::instance();
-         $this->callbacks=new AdminCallbacks();
+		 $this->callbacks=new AdminCallbacks();
+
+		 //$manager=new Image4IOManager();
 
          $this->setPages();
          
@@ -85,8 +88,7 @@
 				'page' => 'image4io_plugin',
 				'section' => 'image4io_admin_dashboard_index',
 				'args' => array(
-					'label_for' => 'api_key',
-					'class' => 'example-class'
+					'label_for' => 'api_key'
 				)
 			),
 			array(
@@ -96,8 +98,7 @@
 				'page' => 'image4io_plugin',
 				'section' => 'image4io_admin_dashboard_index',
 				'args' => array(
-					'label_for' => 'api_secret',
-					'class' => 'example-class'
+					'label_for' => 'api_secret'
 				)
 			)
 		);

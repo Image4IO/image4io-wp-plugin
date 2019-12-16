@@ -1,9 +1,0 @@
-{
-    "name": "image4io/image4iophp-sdk",
-    "description": "Php SDK for image4.io",
-    "license": "MIT",
-    "minimum-stability": "stable",
-    "require": {
-        "php": ">=5.3.0"
-    }
-}

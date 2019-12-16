@@ -12,9 +12,6 @@
       "email": "gokhankocyigit@image4.io"
     }
   ],
-  "require" : {
-    "image4io/image4iophp-sdk":"0.0.1"
-  },
   "autoload":{
     "psr-4":{"Inc\\":"./inc"}
   }

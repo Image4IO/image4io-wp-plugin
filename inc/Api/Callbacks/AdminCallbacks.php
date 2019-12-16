@@ -12,10 +12,6 @@ class AdminCallbacks extends BaseController{
         return require_once("$this->plugin_path/templates/admin.php");
     }
 
-    public function adminConsole(){
-        return require_once("$this->plugin_path/templates/console.php");
-    }
-
     public function adminOptionGroup($input){
         return $input;
     }
@@ -33,4 +29,6 @@ class AdminCallbacks extends BaseController{
         $value=esc_attr(get_option('api_secret'));
         echo '<input type="password" class="regular-text" name="api_secret" value="' . $value . '" placeholder="Api Secret">';
     }
+
+
 }
