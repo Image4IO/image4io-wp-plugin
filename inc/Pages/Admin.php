@@ -20,7 +20,9 @@
          $this->settings=SettingsApi::instance();
 		 $this->callbacks=new AdminCallbacks();
 
-		 //$manager=new Image4IOManager();
+		 $manager=new Image4IOManager();
+		 $res=$manager->getFolders();
+		 var_dump($res);
 
          $this->setPages();
          

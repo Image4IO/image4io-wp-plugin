@@ -7,6 +7,7 @@ namespace Inc\Api;
 
 use Inc\Models\Folder;
 use Inc\Models\Image;
+use Inc\Api\Image4IOApi;
 
 class Image4IOManager{
 
@@ -15,11 +16,11 @@ class Image4IOManager{
     public $folders;
 
     public function __construct(){
-        //$this->apiClient=new Image4IOApi("AZk/jotDUNmCGSN63awlRA==","gLOgvaLMHU6y+Wu2H2c6WkLtZ3Yjke+50n5GH5M8pJE=");
+        $this->apiClient=new Image4IOApi("AZk/jotDUNmCGSN63awlRA==","gLOgvaLMHU6y+Wu2H2c6WkLtZ3Yjke+50n5GH5M8pJE=");
     }
 
-    public function getImages(){
-        
+    public function getFolders(){
+        return $this->apiClient->listFolder("/");
     }
 
 
