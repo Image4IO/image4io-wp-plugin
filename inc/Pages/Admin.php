@@ -20,9 +20,11 @@
          $this->settings=SettingsApi::instance();
 		 $this->callbacks=new AdminCallbacks();
 
-		 $manager=new Image4IOManager();
-		 $res=$manager->getFolders();
+		 /*$manager=new Image4IOManager();
+		 include_once(ABSPATH . 'wp-includes/pluggable.php');
+		 $res=$manager->test();
 		 var_dump($res);
+		 die;*/
 
          $this->setPages();
          
