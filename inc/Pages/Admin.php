@@ -21,8 +21,9 @@
 		 $this->callbacks=new AdminCallbacks();
 
 		 /*$manager=new Image4IOManager();
+		 $manager->setup();
 		 include_once(ABSPATH . 'wp-includes/pluggable.php');
-		 $res=$manager->test();
+		 $res=$manager->getImagesByFolder("a3");
 		 var_dump($res);
 		 die;*/
 
@@ -35,7 +36,7 @@
 		 $this->settings->addPages($this->pages)->withSubPage('Dashboard');
      }
      
-     public function setPages() 
+    public function setPages() 
 	{
 		$this->pages = array(
 			array(
@@ -55,13 +56,8 @@
 		$args = array(
 			array(
 				'option_group' => 'dashboard_options_group',
-				'option_name' => 'api_key',
-				'callback' => array( $this->callbacks, 'dashboardOptionGroup' )
-			),
-			array(
-				'option_group' => 'dashboard_options_group',
-				'option_name' => 'api_secret',
-				'callback' => array( $this->callbacks, 'dashboardOptionGroup' )
+				'option_name' => 'image4io_settings',
+				'callback' => array( $this->callbacks, 'adminOptionGroup' )
 			)
 		);
 
@@ -92,6 +88,7 @@
 				'page' => 'image4io_plugin',
 				'section' => 'image4io_admin_dashboard_index',
 				'args' => array(
+					'option_name'=>'image4io_settings',
 					'label_for' => 'api_key'
 				)
 			),
@@ -102,7 +99,30 @@
 				'page' => 'image4io_plugin',
 				'section' => 'image4io_admin_dashboard_index',
 				'args' => array(
+					'option_name'=>'image4io_settings',
 					'label_for' => 'api_secret'
+				)
+			),
+			array(
+				'id' => 'cloudname',
+				'title' => 'Image4io Cloudname',
+				'callback' => array( $this->callbacks, 'image4ioCloudname' ),
+				'page' => 'image4io_plugin',
+				'section' => 'image4io_admin_dashboard_index',
+				'args' => array(
+					'option_name'=>'image4io_settings',
+					'label_for' => 'cloudname'
+				)
+			),
+			array(
+				'id' => 'folder',
+				'title' => 'Folder',
+				'callback' => array( $this->callbacks, 'image4ioFolder' ),
+				'page' => 'image4io_plugin',
+				'section' => 'image4io_admin_dashboard_index',
+				'args' => array(
+					'option_name'=>'image4io_settings',
+					'label_for' => 'folder'
 				)
 			)
 		);

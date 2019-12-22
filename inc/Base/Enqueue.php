@@ -21,7 +21,7 @@ class Enqueue extends BaseController
 		//wp_enqueue_style( 'image4io_style', $this->plugin_url . 'assets/image4io.css' );
 		//wp_enqueue_style('fontawesome',$this->plugin_url . 'assets/fontawesome/css/all.min.css');
 		//wp_enqueue_style( 'bootstrapjs', $this->plugin_url . 'assets/bootstrap/css/bootstrap.min.css');
-		//wp_enqueue_script( 'image4io_script', $this->plugin_url . 'assets/image4io.js' );
+		wp_enqueue_script( 'image4io_script', $this->plugin_url . 'assets/image4io.js' );
 		//wp_enqueue_scripts('jquery',$this->plugin_url . 'assets/jquery/jquery-3.4.1.min.js');
 	}
 }

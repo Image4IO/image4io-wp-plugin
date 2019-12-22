@@ -13,22 +13,46 @@ class AdminCallbacks extends BaseController{
     }
 
     public function adminOptionGroup($input){
-        return $input;
+        return $input;   
     }
     
     public function dashboardSettingsSection(){
         echo "Image4io - Speeds up the images' load time: optimization, delivery, storage; all-in-one platform";
     }
 
-    public function image4ioApiKey(){
-        $value=esc_attr(get_option('api_key'));
-        echo '<input type="text" class="regular-text" name="api_key" value="' . $value . '" placeholder="Api Key">';
+    public function image4ioApiKey($args){
+        $name=$args['label_for'];
+        $optionName=$args['option_name'];
+        $options=get_option($optionName);
+        $value=isset($options[$name])?$options[$name]:"";
+
+        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Api Key'>";
     }
 
-    public function image4ioApiSecret(){
-        $value=esc_attr(get_option('api_secret'));
-        echo '<input type="password" class="regular-text" name="api_secret" value="' . $value . '" placeholder="Api Secret">';
+    public function image4ioApiSecret($args){
+        $name=$args['label_for'];
+        $optionName=$args['option_name'];
+        $options=get_option($optionName);
+        $value=isset($options[$name])?$options[$name]:"";
+        
+        echo "<input type='password' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Api Secret'>";
     }
 
+    public function image4ioCloudname($args){
+        $name=$args['label_for'];
+        $optionName=$args['option_name'];
+        $options=get_option($optionName);
+        $value=isset($options[$name])?$options[$name]:"";
+
+        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Cloudname'>";
+    }
+    public function image4ioFolder($args){
+        $name=$args['label_for'];
+        $optionName=$args['option_name'];
+        $options=get_option($optionName);
+        $value=isset($options[$name])?$options[$name]:"";
+
+        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Folder'>";
+    }
 
 }
