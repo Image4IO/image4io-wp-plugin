@@ -10,7 +10,7 @@ use Inc\Models\Image;
 use Inc\Api\Image4IOApi;
 use Inc\Base\BaseController;
 
-class Image4IOManager extends BaseController{
+class Image4IOManager{
 
     public $apiClient;
     public $images;
@@ -55,7 +55,8 @@ class Image4IOManager extends BaseController{
             return; //redirect to options page?
         }
         $result=$this->apiClient->listFolder($folder);
-        return json_decode($result,true)["files"];
+        //return json_decode($result,true)["files"];
+        return $result;
     }
 
     public function getFolders($root){

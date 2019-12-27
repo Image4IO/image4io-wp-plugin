@@ -13,6 +13,6 @@
     }
   ],
   "autoload":{
-    "psr-4":{"Inc\\":"./inc"}
+    "psr-4":{"Inc\\":"./inc","Template\\":"./templates"}
   }
 }

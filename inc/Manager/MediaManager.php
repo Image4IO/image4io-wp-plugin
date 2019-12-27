@@ -6,6 +6,8 @@
  namespace Inc\Manager;
 
  use Inc\Base\BaseController;
+ use Inc\Base\Image4ioWidget;
+ use Inc\Api\Image4IOManager;
 
  class MediaManager extends BaseController{
 
@@ -18,7 +20,9 @@
         $this->hookMediaList();
         //$this->hookMediaGrid();
         //$this->hookStorageInfoMetabox();
+        //$this->mediaFrameHook();
         $this->mediaButtonHook();
+        
     }
 
     private function hookAttachmentDetails(){
@@ -94,8 +98,31 @@
 
     }
 
+    private function mediaFrameHook(){
+        add_action( 'widgets_init', array($this,'registerImage4ioWidget'));
+        add_action('admin_enqueue_scripts', array($this,'image4iowidget_enqueue'));
+    }
+    function registerImage4ioWidget(){
+        return register_widget(Image4ioWidget::class);
+    }
+    function image4iowidget_enqueue($hook){
+        if($hook!= 'widgets.php' ) 
+            return;
+        wp_enqueue_style('thickbox');
+        wp_enqueue_script('media-upload');
+        wp_enqueue_script('thickbox');
+        wp_enqueue_script( 'image4io_script', $this->plugin_url . 'assets/js/image4io.js' );
+    }
+
+
+
+
+
     private function mediaButtonHook(){
         add_action('media_buttons', array($this, 'mediaImage4io'), 11);
+        add_action('wp_ajax_image4io_model',array($this, 'getImagesByFolder'));
+        add_action('admin_enqueue_scripts', array($this,'mediaButtonEnqueue'));
+        add_action('wp_ajax_image4io_image_selected',array($this,'imageSelected'));
         //add_action('wp_ajax_image4io_update_options', array($this,'ajax_update_options'));
         //add_filter('wp_get_attachment_url',array($this, 'fix_url'), 1, 2);
         //add_filter('image_downsize', array($this, 'remote_resize'), 1, 3);
@@ -103,72 +130,38 @@
     }
 
     public function mediaImage4io(){
-        wp_enqueue_script('jquery');
+        //wp_enqueue_script('jquery');
 
-        echo '<a href="#" data-toggle="modal" data-target="#addImageModal" class="image4io_add_media button" id="image4io-add_media" '.
-        'title="Add Media from image4io'.'">'.'Image4io Upload/Insert'.'</a><span class="image4io_msg"></span>';
-
-        /*echo '<div class="bootstrap-wrapper"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Launch demo modal
-      </button> 
-      </div>';*/
-
-        add_action( 'admin_footer', array($this,'prepare_bootstrap_modal'));
-
+        echo '<a href="#TB_inline?height=800&width=753&inlineId=examplePopup1&modal=false" class="thickbox button">Add Image4IO</a>';
+        add_action( 'admin_footer', array($this,'prepare_thickbox_modal'));
         return null;
     }
 
-    public function prepare_bootstrap_modal(){
-        echo '<div class="bootstrap-wrapper"><div id="addImageModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <form action="" class="modal-content">
+    public function prepare_thickbox_modal(){
+        require_once("$this->plugin_path/templates/media.php");
+    }
 
-                <div class="admin-form theme-primary tab-pane active" id="login2" role="tabpanel">
-                    <div class="panel panel-primary heading-border">
-                        <div class="panel-heading">
-                            <span class="panel-title">
-                                <i class="fa fa-pencil-square"></i>Kullanıcı Bilgileri
-                            </span>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                x
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    public function mediaButtonEnqueue(){
+        wp_enqueue_script( 'image4io_script', $this->plugin_url . 'assets/js/image4io.js' );
+        $options=get_option( "image4io_settings");
+        $rootFolder=array('rootFolder'=> isset($options['folder'])?$options['folder']:"/" );
+        wp_localize_script( 'image4io_script', 'rootFolder', $rootFolder );
+    }
 
-                <div class="modal-body">
-                    
-                </div>
-                
+    public function getImagesByFolder(){
+        if(isset( $_POST['image4IOFolder'] )) {
+            $manager = new Image4IOManager;
+            $manager->setup();
+            $result = $manager->getImagesByFolder($_POST['image4IOFolder']);
+            echo $result;
+            wp_die();
+       }
+       wp_die();
+    }
 
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary w150">Kaydet</button>
-                </div>
-            </form>
-            
-        </div>
-    </div></div>
-    ';
-
-        /*echo '<div class="bootstrap-wrapper><div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div> </div>';*/
+    public function imageSelected(){
+        var_dump($_POST);
+        wp_die();
     }
 
     public function fix_url($url, $post_id)
@@ -352,6 +345,8 @@
 
         return $id;
     }
+
+    
 
     
 

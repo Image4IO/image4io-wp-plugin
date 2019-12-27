@@ -1,0 +1,46 @@
+.image4io-card {
+  width: 100px;
+  max-height: 200px;
+}
+
+.image-frame {
+  display:flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.image4io-container{
+  display:flex;
+  width: 100%;
+  flex-direction:row;
+  flex-wrap:wrap;
+  margin :10px;
+}
+
+.image4io-container:after{
+  content: "";
+  flex: auto;
+}
+
+.image-folder > img {
+  width:48px;
+  height:48px;
+}
+
+.image4io-folder-path > a {
+  text-decoration: none;
+  color: #000;
+}
+
+.image4io-folder-path > a:after {
+  content: " /";
+}
+.image4io-folder-path > a:first-child:before {
+  content: " Path » ";
+}
+.image4io-folder-path > a:last-child:after {
+  content: "";
+}
+
