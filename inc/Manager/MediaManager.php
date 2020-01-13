@@ -17,7 +17,7 @@
 
     public function hookUI(){
         //$this->hookAttachmentDetails();
-        $this->hookMediaList();
+        //$this->hookMediaList();
         //$this->hookMediaGrid();
         //$this->hookStorageInfoMetabox();
         //$this->mediaFrameHook();
@@ -114,11 +114,7 @@
         wp_enqueue_script( 'image4io_script', $this->plugin_url . 'assets/js/image4io.js' );
     }
 
-
-
-
-
-    private function mediaButtonHook(){
+    public function mediaButtonHook(){
         add_action('media_buttons', array($this, 'mediaImage4io'), 11);
         add_action('wp_ajax_image4io_model',array($this, 'getImagesByFolder'));
         add_action('admin_enqueue_scripts', array($this,'mediaButtonEnqueue'));
@@ -127,12 +123,90 @@
         //add_filter('wp_get_attachment_url',array($this, 'fix_url'), 1, 2);
         //add_filter('image_downsize', array($this, 'remote_resize'), 1, 3);
         //add_action('wp_ajax_image4io_register_image', array($this, 'ajax_register_image'));
+        add_action("init",array($this,"init_shortcode"));
+        add_action("init",array($this,"init_gutenberg_block"));
+    }
+
+    public function init_gutenberg_block(){
+        //wp_enqueue_scripts('image4io-gutenberg-js', $this->plugin_path . "assets/js/image4io-gutenberg.js");
+        wp_register_script( 'image4io-gutenberg-js', $this->plugin_url . "build/index.js", array("wp-blocks","wp-editor","wp-components","wp-compose") );
+        register_block_type( "image4io/image4io-block", array(
+            'editor_script' => "image4io-gutenberg-js"
+        ) );
+    }
+
+    public static function init_shortcode(){
+        add_shortcode( "image4io", array($this,"image4io_shortcode"));
+        //add_filter("shortcode_atts_image4io", array($this,"verify_shortcode_url"));
+        //add_filter('the_content','do_shortcode');
+        
+    }
+    public static function image4io_shortcode($atts){
+        $defaultSizes=$this->get_wp_sizes();
+        //return var_dump($defaultSizes);
+        $a=shortcode_atts( array(
+            'src'=>"",
+            'alt'=>"",
+            'width'=>"default",
+            'height'=>"default",
+            'size'=>"default"
+        ), $atts);
+        if($a['src']==""){
+            return "err";
+        }else{
+            //check the source
+            //if not return
+        };
+        /*$url=$this->createImage4ioUrl($a['src'],500,500);*/
+        //return var_dump($a);
+        if($a['size']=="default"&&$a['height']=="default"&&$a['width']=="default"){
+            $size=$defaultSizes["large"];
+            $url=$this->createImage4ioUrl($a['src'],$size['width'],$size['height']);
+            //$url=$this->createImage4ioUrl($a['src'],500,500);
+            return "<img src='$url' alt='" . $a['alt'] . "'></img>";
+        }elseif($a['size']=="default"){
+            if($a['width']!="default"&&$a['height']!="default"){
+                $url=$this->createImage4ioUrl($a['src'],$a['width'],$a['height']);
+                return "<img src='$url' alt='" . $a['alt'] . "' width='" . $size['width'] . "' height='" . $size['height'] . "'></img>";
+            }elseif($a['width']!="default"){
+                $url=$this->createImage4ioUrl($a['src'],$a['width'],0);
+                return "<img src='$url' alt='" . $a['alt'] . "' width='" . $size['width'] . "'></img>";
+            }else{
+                $url=$this->createImage4ioUrl($a['src'],0,$a['height']);
+                return "<img src='$url' alt='" . $a['alt'] . "' height='" . $size['height'] . "'></img>";
+            }
+        }else{
+            if(!isset($defaultSizes[$a['size']])){
+                return;
+            }
+            $size=$defaultSizes[$a['size']];
+            
+            $url=$this->createImage4ioUrl($a['src'],$size['width'],$size['height']);
+            //return var_dump($url);
+            return "<img src='$url' alt='" . $a['alt'] . "'></img>";
+        }
+    }
+
+    public function createImage4ioUrl($src,$width,$height){
+        $options=get_option("image4io_settings");
+        $cloudname=$options['cloudname'];
+        //return $cloudname;
+        if(!isset($cloudname)||$cloudname==""){
+            return;
+        }
+        if($width==0){
+            return "https://cdn.image4.io/" . $cloudname . "/f_auto,h_" . $height . $src;
+        }else if($height==0){
+            return "https://cdn.image4.io/" . $cloudname . "/f_auto,w_" . $width . $src;
+        }else{
+            return "https://cdn.image4.io/" . $cloudname . "/f_auto,w_" . $width . $src;
+        }
     }
 
     public function mediaImage4io(){
         //wp_enqueue_script('jquery');
 
-        echo '<a href="#TB_inline?height=800&width=753&inlineId=examplePopup1&modal=false" class="thickbox button">Add Image4IO</a>';
+        echo '<a href="#TB_inline?height=800&width=753&inlineId=image4ioModal&modal=false" class="thickbox button">Add Image4IO</a>';
         add_action( 'admin_footer', array($this,'prepare_thickbox_modal'));
         return null;
     }
@@ -160,7 +234,12 @@
     }
 
     public function imageSelected(){
-        var_dump($_POST);
+        global $shortcode_tags;
+        if(isset($_POST['url'])){
+            $name=$_POST['url'];
+            echo "[image4io src='$name']";
+            //echo shortcode_exists( "image4io" );
+        }
         wp_die();
     }
 

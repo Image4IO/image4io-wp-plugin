@@ -31,23 +31,28 @@ jQuery(function($) {
         var rootContainer=$('.image4io-images-container');
         populateContainer(rootContainer,e.currentTarget.dataset.name); 
       }else if(e.currentTarget.dataset.type=="img"){
-        //get folder attr
         var name=e.currentTarget.dataset.name;
+        //console.log(wp.media.editor);
         $.ajax({
           type:"POST",
           data:{
             action:"image4io_image_selected",
-            imageName: name
+            url:name
           },
           url:ajaxurl,
-          success:function(response){
-            //console.log(response);
+          success:function(res){
+            console.log(res);
+            wp.media.editor.insert(res);
           },
           error:function(e){
-            console.log(e);
+            console.log("ERROR:")
+            console.log(e)
           }
-        });
+        })
+        tb_remove('','#TB_inline?height=800&width=753&inlineId=image4ioModal&modal=false');
+
       }
+      
       return false;
     }
     function breadcrumbClick(e){
