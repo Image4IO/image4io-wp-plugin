@@ -83,7 +83,7 @@ jQuery(function($) {
           folders.forEach(folder=>{
             cardHtml+='<div class="card-panel image4io-card" data-type="folder" data-parentFolder="'+parentFolder+'" data-name="'+folder.name+'">'+
               '<div class="card-image image-frame image-folder">'+
-                '<img src="'+assetPath.staticImages+'folder.png" alt="'+folder.name+'">'+
+                '<div class="frame-img"><img src="'+assetPath.staticImages+'folder.png" alt="'+folder.name+'"></div>'+
                 '<h4><b>'+folder.name+'</b></h4>'+
               '</div>'+
             '</div>';
@@ -92,7 +92,7 @@ jQuery(function($) {
           images.forEach(image => {
             cardHtml+='<div class="card-panel image4io-card" data-type="img" data-name="'+image.name+'">'+
               '<div class="card-image image-frame">'+
-                '<img src="https://cdn.image4.io/i4io/w_64,f_auto'+image.name+'" alt="'+image.name.substring(1)+'">'+
+                '<div class="frame-img"><img src="https://cdn.image4.io/i4io/w_64,f_auto'+image.name+'" alt="'+image.name.substring(1)+'"></div>'+
                 '<h4><b>'+image.orginal_name+'</b></h4>'+
               '</div>'+
             '</div>';

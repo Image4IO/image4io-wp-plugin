@@ -20,5 +20,8 @@
   "homepage": "https://github.com/gkocyigit/image4io-plugin#readme",
   "devDependencies": {
     "@wordpress/scripts": "6.1.1"
+  },
+  "dependencies": {
+    "@wordpress/data": "^4.12.0"
   }
 }

@@ -105,88 +105,130 @@ var _wp$editor = wp.editor,
 var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
     TextControl = _wp$components.TextControl;
-registerBlockType('image4io/image4io-block', {
-  title: 'Image4io',
-  description: 'Block to generate images from image4io',
-  icon: 'format-image',
-  category: 'layout',
-  //custom attributes
-  attributes: {
-    url: {
-      type: "string",
-      default: null
-    },
-
-    /*url:{
-        type:"string",
-        source:"attribute",
-        selector:"img",
-        attribute:"src",
-        default:null
-    }, */
-    width: {
-      type: "string",
-      default: "500"
-    },
-    height: {
-      type: "string",
-      default: null
-    },
-    size: {
-      type: "string",
-      default: "large"
-    }
-  },
-  //built-in functions
-  edit: function edit(_ref) {
-    var attributes = _ref.attributes,
-        setAttributes = _ref.setAttributes;
-    var url = attributes.url,
-        width = attributes.width,
-        height = attributes.height,
-        size = attributes.size; //custom functions
-
-    function onWidthChange(newSize) {
-      setAttributes({
-        size: newSize
-      });
-    }
-
-    function onUrlChange(newUrl) {
-      setAttributes({
-        url: newUrl
-      });
-    }
-
-    return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
-      style: {
-        marginBottom: "40px"
+jQuery(function ($) {
+  function returnImage4ioUrl(src, w, h) {
+    $.ajax({
+      type: "POST",
+      data: {
+        action: "return_image_url",
+        url: src,
+        width: w,
+        height: h
+      },
+      url: ajaxurl,
+      success: function success(res) {
+        console.log(res);
+        return res;
+      },
+      error: function error(e) {
+        console.log("ERROR:");
+        console.log(e);
       }
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
-      title: 'Image Settings'
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(TextControl, {
-      label: "Url (required)",
-      value: url,
-      onChange: onUrlChange
-    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(TextControl, {
-      label: "Width",
-      value: width,
-      onChange: onWidthChange
-    }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("img", {
-      src: "url"
-    })];
-  },
-  save: function save(_ref2) {
-    var attributes = _ref2.attributes;
-    var url = attributes.url,
-        width = attributes.width,
-        height = attributes.height,
-        size = attributes.size;
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("img", {
-      src: url,
-      width: width
     });
   }
+
+  registerBlockType('image4io/image4io-block', {
+    title: 'Image4io',
+    description: 'Block to generate images from image4io',
+    icon: 'format-image',
+    category: 'layout',
+    //custom attributes
+    attributes: {
+      url: {
+        type: "string",
+        default: null
+      },
+      src: {
+        type: "string",
+        default: ""
+      },
+
+      /*url:{
+          type:"string",
+          source:"attribute",
+          selector:"img",
+          attribute:"src",
+          default:null
+      }, */
+      width: {
+        type: "string",
+        default: "500"
+      },
+      height: {
+        type: "string",
+        default: "500"
+      },
+      size: {
+        type: "string",
+        default: "large"
+      }
+    },
+    //built-in functions
+    edit: function edit(_ref) {
+      var attributes = _ref.attributes,
+          setAttributes = _ref.setAttributes;
+      var src = attributes.src,
+          url = attributes.url,
+          width = attributes.width,
+          height = attributes.height,
+          size = attributes.size; //custom functions
+
+      function onWidthChange(newSize) {
+        setAttributes({
+          width: newSize
+        });
+      }
+
+      function onSrcChange(newUrl) {
+        setAttributes({
+          src: newUrl
+        });
+      }
+
+      function onHeightChange(newSize) {
+        setAttributes({
+          height: newSize
+        });
+      }
+
+      var result = returnImage4ioUrl(src, width, height);
+      console.log(result);
+      return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
+        style: {
+          marginBottom: "40px"
+        }
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+        title: 'Image Settings'
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(TextControl, {
+        label: "Source (required)",
+        value: url,
+        onChange: onUrlChange
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(TextControl, {
+        label: "Width",
+        value: width,
+        onChange: onWidthChange
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(TextControl, {
+        label: "Height",
+        value: height,
+        onChange: onHeightChange
+      }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("img", {
+        src: result,
+        width: width,
+        height: height
+      })];
+    },
+    save: function save(_ref2) {
+      var attributes = _ref2.attributes;
+      var url = attributes.url,
+          width = attributes.width,
+          height = attributes.height;
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("img", {
+        src: url,
+        width: width,
+        height: height
+      });
+    }
+  });
 });
 
 /***/ }),

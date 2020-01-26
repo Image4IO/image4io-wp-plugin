@@ -119,20 +119,31 @@
         add_action('wp_ajax_image4io_model',array($this, 'getImagesByFolder'));
         add_action('admin_enqueue_scripts', array($this,'mediaButtonEnqueue'));
         add_action('wp_ajax_image4io_image_selected',array($this,'imageSelected'));
+        add_action('wp_ajax_return_image_url',array($this,'return_image_url'));
         //add_action('wp_ajax_image4io_update_options', array($this,'ajax_update_options'));
         //add_filter('wp_get_attachment_url',array($this, 'fix_url'), 1, 2);
         //add_filter('image_downsize', array($this, 'remote_resize'), 1, 3);
         //add_action('wp_ajax_image4io_register_image', array($this, 'ajax_register_image'));
         add_action("init",array($this,"init_shortcode"));
-        add_action("init",array($this,"init_gutenberg_block"));
+        //add_action("init",array($this,"init_gutenberg_block"));
     }
 
     public function init_gutenberg_block(){
         //wp_enqueue_scripts('image4io-gutenberg-js', $this->plugin_path . "assets/js/image4io-gutenberg.js");
-        wp_register_script( 'image4io-gutenberg-js', $this->plugin_url . "build/index.js", array("wp-blocks","wp-editor","wp-components","wp-compose") );
+        wp_register_script( 'image4io-gutenberg-js', $this->plugin_url . "build/index.js", array("wp-blocks","wp-editor","wp-components","wp-compose","wp-data") );
         register_block_type( "image4io/image4io-block", array(
             'editor_script' => "image4io-gutenberg-js"
         ) );
+    }
+
+    public function return_image_url(){
+        /*if(isset($_POST['url'])){
+            $name=
+            $url=$this->createImage4ioUrl($_POST['url'],$_POST["width"],$_POST["height"]);
+            echo $url;
+        }
+        wp_die();*/
+        echo "ffffs";
     }
 
     public static function init_shortcode(){
@@ -147,9 +158,9 @@
         $a=shortcode_atts( array(
             'src'=>"",
             'alt'=>"",
-            'width'=>"default",
-            'height'=>"default",
-            'size'=>"default"
+            'width'=>0,
+            'height'=>0,
+            'size'=>"large"
         ), $atts);
         if($a['src']==""){
             return "err";
@@ -159,31 +170,37 @@
         };
         /*$url=$this->createImage4ioUrl($a['src'],500,500);*/
         //return var_dump($a);
-        if($a['size']=="default"&&$a['height']=="default"&&$a['width']=="default"){
-            $size=$defaultSizes["large"];
-            $url=$this->createImage4ioUrl($a['src'],$size['width'],$size['height']);
-            //$url=$this->createImage4ioUrl($a['src'],500,500);
-            return "<img src='$url' alt='" . $a['alt'] . "'></img>";
-        }elseif($a['size']=="default"){
-            if($a['width']!="default"&&$a['height']!="default"){
-                $url=$this->createImage4ioUrl($a['src'],$a['width'],$a['height']);
-                return "<img src='$url' alt='" . $a['alt'] . "' width='" . $size['width'] . "' height='" . $size['height'] . "'></img>";
-            }elseif($a['width']!="default"){
-                $url=$this->createImage4ioUrl($a['src'],$a['width'],0);
-                return "<img src='$url' alt='" . $a['alt'] . "' width='" . $size['width'] . "'></img>";
-            }else{
-                $url=$this->createImage4ioUrl($a['src'],0,$a['height']);
-                return "<img src='$url' alt='" . $a['alt'] . "' height='" . $size['height'] . "'></img>";
+/*
+        if($a['height']==0&&$a['width']==0){
+            if(!isset($defaultSizes[$a['size']])){
+                return;
             }
+            $size=$defaultSizes[$a['size']];
+            $url=$this->createImage4ioUrl($a['src'],$size['width'],$size['height']);
+            //return var_dump($url);
+            return "<img src='$url' alt='" . $a['alt'] . "'></img>";
+        }else{
+            $url=$this->createImage4ioUrl($a['src'],$a['width'],$a['height']);
+            return "<img src='$url' alt='" . $a['alt'] . "'></img>";
+        }*/
+
+        if($a['width']!=0&&$a['height']!=0){
+            $url=$this->createImage4ioUrl($a['src'],$a['width'],$a['height']);
+            return "<div class='image4io-parent'><img class='shortcode-image' src='$url' style='width: ". $a['width'] ."px;height: ". $a['height'] ."'></img></div>";
+        }elseif($a['width']!="default"){
+            $url=$this->createImage4ioUrl($a['src'],$a['width'],0);
+            return "<div class='image4io-parent'><img class='shortcode-image' src='$url' style='width: ". $a['width'] ."px;height:auto;'></img></div>";
+        }elseif($a['height']!="default"){
+            $url=$this->createImage4ioUrl($a['src'],0,$a['height']);
+            return "<div class='image4io-parent'><img class='shortcode-image' src='$url' style='height: ". $a['height'] ."px;width:auto;'></img></div>";
         }else{
             if(!isset($defaultSizes[$a['size']])){
                 return;
             }
             $size=$defaultSizes[$a['size']];
-            
             $url=$this->createImage4ioUrl($a['src'],$size['width'],$size['height']);
             //return var_dump($url);
-            return "<img src='$url' alt='" . $a['alt'] . "'></img>";
+            return "<div class='image4io-parent'><img class='shortcode-image' src='$url' style='width: ". $size['width'] ."px;height:auto;'></img></div>";
         }
     }
 
@@ -194,12 +211,13 @@
         if(!isset($cloudname)||$cloudname==""){
             return;
         }
-        if($width==0){
-            return "https://cdn.image4.io/" . $cloudname . "/f_auto,h_" . $height . $src;
-        }else if($height==0){
-            return "https://cdn.image4.io/" . $cloudname . "/f_auto,w_" . $width . $src;
+
+        if($width!=0&&$height!=0){
+            return "https://cdn.image4.io/" . $cloudname . "/f_auto,c_fit,w_" . $width . ",h_" . $height . $src;
+        }elseif($width!=0){
+            return "https://cdn.image4.io/" . $cloudname . "/f_auto,c_fit,w_" . $width . $src;
         }else{
-            return "https://cdn.image4.io/" . $cloudname . "/f_auto,w_" . $width . $src;
+            return "https://cdn.image4.io/" . $cloudname . "/f_auto,c_fit,h_" . $height . $src;
         }
     }
 
