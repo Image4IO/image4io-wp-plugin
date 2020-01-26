@@ -4,14 +4,12 @@ jQuery(function($) {
         var rootContainer=$('.image4io-images-container');
         
         if(rootContainer||!init){
-          //console.log(rootFolder);
           init=true;
           populateContainer(rootContainer,rootFolder.rootFolder);
         }
     });
     function handleDoubleClick(e){
       clearSelection();
-      console.log(e);
       if(e.currentTarget.dataset.type=="folder"){
         //add breadcrumb
         var breadcrumbDiv=$('.image4io-folder-path');
@@ -32,7 +30,6 @@ jQuery(function($) {
         populateContainer(rootContainer,e.currentTarget.dataset.name); 
       }else if(e.currentTarget.dataset.type=="img"){
         var name=e.currentTarget.dataset.name;
-        //console.log(wp.media.editor);
         $.ajax({
           type:"POST",
           data:{
@@ -41,7 +38,6 @@ jQuery(function($) {
           },
           url:ajaxurl,
           success:function(res){
-            console.log(res);
             wp.media.editor.insert(res);
           },
           error:function(e){
@@ -65,7 +61,6 @@ jQuery(function($) {
     }
     
     function populateContainer(rootContainer,parentFolder){
-      //console.log(parentFolder);
 
       $.ajax({
         type:"POST",
@@ -75,7 +70,6 @@ jQuery(function($) {
         },
         url:ajaxurl,
         success:function(response){
-          //console.log(response);
           var data=JSON.parse(response);
           var folders=data.folders;
           var images=data.files;
@@ -91,7 +85,7 @@ jQuery(function($) {
           cardHtml+='</div><div class="image4io-container">';
           images.forEach(image => {
             cardHtml+='<div class="card-panel image4io-card" data-type="img" data-name="'+image.name+'">'+
-              '<div class="card-image image-frame">'+
+              '<div class="card-image image-frame image-img">'+
                 '<div class="frame-img"><img src="https://cdn.image4.io/i4io/w_64,f_auto'+image.name+'" alt="'+image.name.substring(1)+'"></div>'+
                 '<h4><b>'+image.orginal_name+'</b></h4>'+
               '</div>'+

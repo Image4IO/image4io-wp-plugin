@@ -1,4 +1,4 @@
-const {registerBlockType} = wp.blocks;
+/*const {registerBlockType} = wp.blocks;
 const {InspectorControls,MediaUpload}=wp.editor;
 const {PanelBody, TextControl }=wp.components;
 const {registerStore,withSelect} = wp.data;
@@ -40,13 +40,13 @@ registerBlockType('image4io/image4io-block', {
             type:"string",
             default:""
         },
-        /*url:{
+        url:{
             type:"string",
             source:"attribute",
             selector:"img",
             attribute:"src",
             default:null
-        }, */
+        }, 
         width:{
             type:"string",
             default:"500"
@@ -117,4 +117,4 @@ registerBlockType('image4io/image4io-block', {
     }
 
 })
-});
+});*/

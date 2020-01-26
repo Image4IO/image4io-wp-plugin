@@ -36,11 +36,14 @@
 }
 .image-frame > h4{
   word-break: break-word;
+  text-align:center;
 }
-.image-frame > .frame-img{
+.frame-img{
   width: 64px;
   height:64px;
   max-width: 100%;
+}
+.image-img > .frame-img{
   background-color: #fefefe;
   background-image: -webkit-linear-gradient(45deg,#cbcbcb 25%,transparent 25%,transparent 75%,#cbcbcb 75%,#cbcbcb),-webkit-linear-gradient(45deg,#cbcbcb 25%,transparent 25%,transparent 75%,#cbcbcb 75%,#cbcbcb);
   background-image: -moz-linear-gradient(45deg,#cbcbcb 25%,transparent 25%,transparent 75%,#cbcbcb 75%,#cbcbcb),-moz-linear-gradient(45deg,#cbcbcb 25%,transparent 25%,transparent 75%,#cbcbcb 75%,#cbcbcb);

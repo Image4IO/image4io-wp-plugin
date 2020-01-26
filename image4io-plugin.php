@@ -4,7 +4,7 @@
  */
 /*
 Plugin Name: image4io-plugin
-Plugin URI: https://github.com/image4io/image4io-plugin
+Plugin URI: https://github.com/gkocyigit/image4io-plugin
 Description: Automatically uploads and optimizes images. Boosts site performance and simplifies workflows.
 Author: Gokhan Kocyigit
 Version: 0.0.1
