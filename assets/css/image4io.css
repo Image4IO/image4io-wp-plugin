@@ -24,10 +24,12 @@
   flex: auto;
 }
 
-.image-frame > .frame-img > img {
+.image-frame > .frame-img > img , .image-frame > .frame-img > .image-centered > img{
   text-align: center;
   width: 100%;
   height: auto;
+  max-width: 64px;
+  max-height: 64px;
 }
 
 .image4io-folder-path > a {
@@ -42,7 +44,15 @@
   width: 64px;
   height:64px;
   max-width: 100%;
+  display:table;
 }
+
+.image-centered{
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+}
+
 .image-img > .frame-img{
   background-color: #fefefe;
   background-image: -webkit-linear-gradient(45deg,#cbcbcb 25%,transparent 25%,transparent 75%,#cbcbcb 75%,#cbcbcb),-webkit-linear-gradient(45deg,#cbcbcb 25%,transparent 25%,transparent 75%,#cbcbcb 75%,#cbcbcb);
