@@ -3,11 +3,10 @@
  * @package image4ioPlugin
  */
 
- namespace Inc\Manager;
+ namespace Image4io\Manager;
 
- use Inc\Base\BaseController;
- use Inc\Base\Image4ioWidget;
- use Inc\Api\Image4IOManager;
+ use Image4io\Base\BaseController;
+ use Image4io\Api\Image4IOManager;
 
  class MediaManager extends BaseController{
 
@@ -21,19 +20,19 @@
     }
 
     public function mediaButtonHook(){
+        add_action("init",array($this,"init_image4io_shortcode"));
         add_action('media_buttons', array($this, 'mediaImage4io'), 11);
-        add_action('wp_ajax_image4io_model',array($this, 'getImagesByFolder'));
         add_action('admin_enqueue_scripts', array($this,'mediaButtonEnqueue'));
         add_action('wp_ajax_image4io_image_selected',array($this,'imageSelected'));
-        add_action("init",array($this,"init_shortcode"));
+        add_action('wp_ajax_image4io_model',array($this, 'getImagesByFolder'));
     }
 
-    public static function init_shortcode(){
+    public static function init_image4io_shortcode(){
         add_shortcode( "image4io", array($this,"image4io_shortcode"));
     }
     public static function image4io_shortcode($atts){
         $defaultSizes=$this->get_wp_sizes();
-        $a=shortcode_atts( array(
+        $a=shortcode_atts(array(
             'src'=>"",
             'alt'=>"",
             'width'=>0,
@@ -41,16 +40,16 @@
             'size'=>"large"
         ), $atts);
         if($a['src']==""){
-            return "err";
+            return;
         }
 
         if($a['width']!=0&&$a['height']!=0){
             $url=$this->createImage4ioUrl($a['src'],$a['width'],$a['height']);
             return "<div class='image4io-parent'><img class='shortcode-image' src='$url' style='width: ". $a['width'] ."px;height: ". $a['height'] ."'></img></div>";
-        }elseif($a['width']!="default"){
+        }elseif($a['width']!=0){
             $url=$this->createImage4ioUrl($a['src'],$a['width'],0);
             return "<div class='image4io-parent'><img class='shortcode-image' src='$url' style='width: ". $a['width'] ."px;height:auto;'></img></div>";
-        }elseif($a['height']!="default"){
+        }elseif($a['height']!=0){
             $url=$this->createImage4ioUrl($a['src'],0,$a['height']);
             return "<div class='image4io-parent'><img class='shortcode-image' src='$url' style='height: ". $a['height'] ."px;width:auto;'></img></div>";
         }else{
@@ -100,9 +99,15 @@
 
     public function getImagesByFolder(){
         if(isset( $_POST['image4IOFolder'] )) {
+            $folder=esc_url($_POST['image4IOFolder']);
             $manager = new Image4IOManager;
             $manager->setup();
-            $result = $manager->getImagesByFolder($_POST['image4IOFolder']);
+            $result = $manager->getImagesByFolder($folder);
+            try {
+                $result = _wp_json_sanity_check( $result, 512 );
+            } catch ( Exception $e ) {
+                wp_die();
+            }
             echo $result;
             wp_die();
        }
@@ -111,12 +116,13 @@
 
     public function imageSelected(){
         if(isset($_POST['url'])){
-            $name=$_POST['url'];
-            echo "[image4io src='$name']";
+            $name=esc_url( $_POST['url'] );
+            $buildedHtml="<!--wp:shortcode -->\n[image4io src='$name']\n<!--/wp:shortcode-->\n";
+            $buildedHtml=wp_check_invalid_utf8($buildedHtml);
+            echo $buildedHtml;
         }
         wp_die();
     }
-
 
     public function get_wp_sizes()
     {

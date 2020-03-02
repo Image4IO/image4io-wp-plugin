@@ -3,16 +3,16 @@
  * @package image4ioPlugin
  */
 
-namespace Inc;
+namespace Image4io;
 
-use Inc\Api\SettingsApi;
+use Image4io\Api\SettingsApi;
 
 final class Init{
     public static function get_services(){
         return [
-            Pages\Admin::class,
             Base\Enqueue::class,
             Base\SettingsLink::class,
+            Pages\Admin::class,
             Manager\MediaManager::class
         ];
     }

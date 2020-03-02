@@ -3,12 +3,10 @@
  * @package image4ioPlugin
  */
 
-namespace Inc\Api;
+namespace Image4io\Api;
 
-use Inc\Models\Folder;
-use Inc\Models\Image;
-use Inc\Api\Image4IOApi;
-use Inc\Base\BaseController;
+use Image4io\Api\Image4IOApi;
+use Image4io\Base\BaseController;
 
 class Image4IOManager{
 
@@ -66,22 +64,4 @@ class Image4IOManager{
         $result=$this->apiClient->listFolder($root);
         return json_decode($result);
     }
-
-
-    
-    
-
-    public function test(){
-        //$baseDir=wp_upload_dir();
-        //return $this->apiClient->uploadImage( $baseDir['path'] ."/image.png"  , "a3");
-        //return $this->apiClient->connect();
-        //return $this->apiClient->get("/a3/62731b18-a071-475f-8198-a703679e13d3.jpg");
-        //return $this->apiClient->fetch("https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940","a3");
-        //return $this->apiClient->listFolder("a3");
-        //return $this->apiClient->createFolder("a3","a4");
-        //return $this->apiClient->deleteFile("/a3/62731b18-a071-475f-8198-a703679e13d3.jpg");
-        //return $this->apiClient->deleteFolder("a3/a4");
-        //return $this->apiClient->getSubscription();
-    }
-    
 }

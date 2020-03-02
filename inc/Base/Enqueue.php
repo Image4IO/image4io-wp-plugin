@@ -3,9 +3,9 @@
  * @package image4ioPlugin
  */
 
-namespace Inc\Base;
+namespace Image4io\Base;
 
-use Inc\Base\BaseController;
+use Image4io\Base\BaseController;
 
 
 class Enqueue extends BaseController
@@ -15,15 +15,11 @@ class Enqueue extends BaseController
 	}
 	
 	function enqueue($hook) {
-		//TODO: bootstrap only to console page
-
 		// enqueue all our scripts
-		wp_enqueue_style( 'image4io_style', $this->plugin_url . 'assets/css/image4io.css' );
-		wp_enqueue_style('materialize',$this->plugin_url . 'assets/css/card.css');
-		$assetPath=array('staticImages'=>"$this->plugin_url" .'assets/img/' );
-		//wp_enqueue_style( 'bootstrapjs', $this->plugin_url . 'assets/bootstrap/css/bootstrap.min.css');
+		wp_enqueue_style( 'image4io_plugin_style', $this->plugin_url . 'assets/css/image4io.css' );
+		wp_enqueue_style('image4io_plugin_card',$this->plugin_url . 'assets/css/card.css');
+		$assetPath=array('image4io_static_images'=>"$this->plugin_url" .'assets/img/' );
 		wp_enqueue_script( 'image4io_script', $this->plugin_url . 'assets/js/image4io.js' );
-		//wp_enqueue_scripts('materialize-js',$this->plugin_url . 'assets/materialize/js/materialize.min.js');
 		wp_localize_script( 'image4io_script', 'assetPath', $assetPath );
 	}
 }

@@ -3,12 +3,11 @@
  * @package image4ioPlugin
  */
 
- namespace Inc\Pages;
+ namespace Image4io\Pages;
 
- use Inc\Api\SettingsApi;
- use Inc\Base\BaseController;
- use Inc\Api\Callbacks\AdminCallbacks;
- use Inc\Api\Image4IOManager;
+ use Image4io\Api\SettingsApi;
+ use Image4io\Base\BaseController;
+ use Image4io\Api\Callbacks\AdminCallbacks;
 
  class Admin extends BaseController {
 
@@ -19,13 +18,6 @@
      public function register(){
          $this->settings=SettingsApi::instance();
 		 $this->callbacks=new AdminCallbacks();
-
-		 /*$manager=new Image4IOManager();
-		 $manager->setup();
-		 include_once(ABSPATH . 'wp-includes/pluggable.php');
-		 $res=$manager->getImagesByFolder("a3");
-		 var_dump($res);
-		 die;*/
 
          $this->setPages();
          

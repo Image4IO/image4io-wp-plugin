@@ -13,7 +13,7 @@ class ComposerStaticInit2681e9faeef00c72d00162cd0cd29266
         ),
         'I' => 
         array (
-            'Inc\\' => 4,
+            'Image4io\\' => 9,
         ),
     );
 
@@ -22,7 +22,7 @@ class ComposerStaticInit2681e9faeef00c72d00162cd0cd29266
         array (
             0 => __DIR__ . '/../..' . '/templates',
         ),
-        'Inc\\' => 
+        'Image4io\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc',
         ),

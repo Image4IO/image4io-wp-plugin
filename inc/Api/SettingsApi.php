@@ -3,7 +3,7 @@
  * @package image4ioPlugin
  */
 
-namespace Inc\Api;
+namespace Image4io\Api;
 
 final class SettingsApi {
     public $admin_pages = array();
@@ -19,7 +19,6 @@ final class SettingsApi {
         if ( !isset( self::$instance ) ) {
             $class = __CLASS__;
             self::$instance = new $class();
-            //self::$instance->setup();
         }
         
         return self::$instance;

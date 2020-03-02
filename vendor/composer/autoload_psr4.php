@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Template\\' => array($baseDir . '/templates'),
-    'Inc\\' => array($baseDir . '/inc'),
+    'Image4io\\' => array($baseDir . '/inc'),
 );

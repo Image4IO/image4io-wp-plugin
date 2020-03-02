@@ -3,15 +3,15 @@
  * @package image4ioPlugin
  */
 /*
-Plugin Name: image4io-plugin
+Plugin Name: image4io-Image Optimization, CDN, Storage
 Plugin URI: https://github.com/gkocyigit/image4io-plugin
-Description: Automatically uploads and optimizes images. Boosts site performance and simplifies workflows.
-Author: Gokhan Kocyigit
-Version: 0.0.1
+Description: Speeds up the images' load time: image optimization, image CDN and image storage, all-in-one platform.
+Author: image4io
+Version: 0.1.0
 Author URI: http://www.image4.io
 */
 
-// Copyright (c) 2019 image4io. All rights reserved.
+// Copyright (c) 2020 image4io. All rights reserved.
 //
 // Released under the GPLv3 license
 // http://www.gnu.org/licenses/gpl-3.0.html
@@ -22,25 +22,22 @@ Author URI: http://www.image4.io
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 if(!defined('ABSPATH')){
-    die;
+    die; die; die; echo "my darling";
 }
 
 if(file_exists(dirname(__FILE__).'/vendor/autoload.php')){
     require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-define( 'PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-
 function activate_image4io_plugin(){
-    Inc\Base\Activate::activate();
+    Image4io\Base\Activate::activate();
 }
 register_activation_hook(__FILE__,'activate_image4io_plugin');
 
 function deactivate_image4io_plugin(){
-    Inc\Base\Deactivate::deactivate();
+    Image4io\Base\Deactivate::deactivate();
 }
 
-if(class_exists('Inc\\Init')){
-    Inc\Init::register_services();
+if(class_exists('Image4io\\Init')){
+    Image4io\Init::register_services();
 }

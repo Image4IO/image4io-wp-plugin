@@ -1,6 +1,6 @@
 {
-  "name" : "image4io/image4io-plugin",
-  "description": "Tools for cropping, uploading to S3, serving through Imgix",
+  "name" : "image4io/image4io",
+  "description": "Speeds up the images' load time: image optimization, image CDN and image storage, all-in-one platform",
   "type": "wordpress-plugin",
   "license": "LGPL-3.0-or-later",
   "keywords": ["image4io","image","cdn", "image-optimization" ,"wordpress"],
@@ -8,11 +8,11 @@
   ],
   "authors": [
     {
-      "name": "Gokhan Kocyigit",
-      "email": "gokhankocyigit@image4.io"
+      "name": "image4io",
+      "email": "info@image4.io"
     }
   ],
   "autoload":{
-    "psr-4":{"Inc\\":"./inc","Template\\":"./templates"}
+    "psr-4":{"Image4io\\":"./inc","Template\\":"./templates"}
   }
 }

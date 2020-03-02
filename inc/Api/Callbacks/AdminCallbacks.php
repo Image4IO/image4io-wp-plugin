@@ -3,9 +3,9 @@
  * @package image4ioPlugin
  */
 
-namespace Inc\Api\Callbacks;
+namespace Image4io\Api\Callbacks;
 
-use Inc\Base\BaseController;
+use Image4io\Base\BaseController;
 
 class AdminCallbacks extends BaseController{
     public function adminDashboard(){
@@ -17,7 +17,7 @@ class AdminCallbacks extends BaseController{
     }
     
     public function dashboardSettingsSection(){
-        echo "Image4io - Speeds up the images' load time: optimization, delivery, storage; all-in-one platform";
+        echo "If you want to use image4io plugin, you should fill out these informations from image4io console.";
     }
 
     public function image4ioApiKey($args){
@@ -26,7 +26,7 @@ class AdminCallbacks extends BaseController{
         $options=get_option($optionName);
         $value=isset($options[$name])?$options[$name]:"";
 
-        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Api Key'>";
+        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Your API Key'>";
     }
 
     public function image4ioApiSecret($args){
@@ -35,7 +35,7 @@ class AdminCallbacks extends BaseController{
         $options=get_option($optionName);
         $value=isset($options[$name])?$options[$name]:"";
         
-        echo "<input type='password' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Api Secret'>";
+        echo "<input type='password' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Your API Secret'>";
     }
 
     public function image4ioCloudname($args){
@@ -44,7 +44,7 @@ class AdminCallbacks extends BaseController{
         $options=get_option($optionName);
         $value=isset($options[$name])?$options[$name]:"";
 
-        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Cloudname'>";
+        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Your cloudname'>";
     }
     public function image4ioFolder($args){
         $name=$args['label_for'];
@@ -52,7 +52,7 @@ class AdminCallbacks extends BaseController{
         $options=get_option($optionName);
         $value=isset($options[$name])?$options[$name]:"";
 
-        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Folder'>";
+        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Which folder to show? (Root is /)'>";
     }
 
 }

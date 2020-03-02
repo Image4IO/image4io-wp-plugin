@@ -2,32 +2,32 @@ jQuery(function($) {
     $(document).ready(function(){
         var init=false;
         var rootContainer=$('.image4io-images-container');
-        
-        if(rootContainer||!init){
+        if(rootContainer.length==1||init){
           init=true;
           populateContainer(rootContainer,rootFolder.rootFolder);
+          createBreadcrumb(rootFolder.rootFolder)
         }
     });
     function handleDoubleClick(e){
       clearSelection();
       if(e.currentTarget.dataset.type=="folder"){
         //add breadcrumb
-        var breadcrumbDiv=$('.image4io-folder-path');
-        var parent=e.currentTarget.dataset.parentfolder;
-        var pattern=/[^/]+(?=\/$|$)/i
-        var parentId;
-        if(parent=="/"){
-          parentId="root";
+        var populatingFolder=e.currentTarget.dataset.parentfolder;
+        if(populatingFolder!="/"){
+          populatingFolder+='/'+e.currentTarget.dataset.name;
         }else{
-          parentId=parent.match(pattern);
+          populatingFolder+=e.currentTarget.dataset.name;
         }
-        breadcrumbDiv.append('<a href="#" class="image4io-breadcrumb" id="'+parentId+'" data-folder="'+parent+'">'+parent+'</a>');
-        $(".image4io-breadcrumb").off("click").on("click",breadcrumbClick);
+        createBreadcrumb(populatingFolder)
         //clear container
         $('.image4io-images-container').empty();
         //populate container with folder
         var rootContainer=$('.image4io-images-container');
-        populateContainer(rootContainer,e.currentTarget.dataset.name); 
+        if(e.currentTarget.dataset.parentfolder!="/"){
+          populateContainer(rootContainer,e.currentTarget.dataset.parentfolder+'/'+e.currentTarget.dataset.name); 
+        }else{
+          populateContainer(rootContainer,'/'+e.currentTarget.dataset.name); 
+        }
       }else if(e.currentTarget.dataset.type=="img"){
         var name=e.currentTarget.dataset.name;
         $.ajax({
@@ -56,12 +56,27 @@ jQuery(function($) {
       $('.image4io-images-container').empty();
       var rootContainer=$('.image4io-images-container');
       populateContainer(rootContainer,folder);
-      $('#'+e.currentTarget.id).nextAll().remove();
-      e.currentTarget.remove();
+      createBreadcrumb(folder)
+    }
+
+    function createBreadcrumb(folderName){
+      var breadcrumbDiv=$('.image4io-folder-path');
+      $('.image4io-folder-path').empty();
+      var crumbs=folderName.split('/');
+      //console.log(crumbs);
+      breadcrumbDiv.append('<a href="#" class="image4io-breadcrumb" data-folder="/">Root</a>');
+      var currentLink="";
+      crumbs.forEach(currentPath=>{
+        //console.log(currentPath);
+        if(currentPath!=""){
+          currentLink+='/'+currentPath
+          breadcrumbDiv.append('<i class="fa fa-angle-right"></i><a href="#" class="image4io-breadcrumb" data-folder="'+currentLink+'">'+currentPath+'</a>');
+        }
+      })
+      $(".image4io-breadcrumb").off("click").on("click",breadcrumbClick);
     }
     
     function populateContainer(rootContainer,parentFolder){
-
       $.ajax({
         type:"POST",
         data:{
@@ -70,6 +85,7 @@ jQuery(function($) {
         },
         url:ajaxurl,
         success:function(response){
+          //console.log(response);
           var data=JSON.parse(response);
           var folders=data.folders;
           var images=data.files;
@@ -77,7 +93,7 @@ jQuery(function($) {
           folders.forEach(folder=>{
             cardHtml+='<div class="card-panel image4io-card" data-type="folder" data-parentFolder="'+parentFolder+'" data-name="'+folder.name+'">'+
               '<div class="card-image image-frame image-folder">'+
-                '<div class="frame-img"><img src="'+assetPath.staticImages+'folder.png" alt="'+folder.name+'"></div>'+
+                '<div class="frame-img"><img src="'+assetPath.image4io_static_images+'folder.png" alt="'+folder.name+'"></div>'+
                 '<h4><b>'+folder.name+'</b></h4>'+
               '</div>'+
             '</div>';

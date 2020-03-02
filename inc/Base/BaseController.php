@@ -3,7 +3,7 @@
  * @package image4ioPlugin
  */
 
-namespace Inc\Base;
+namespace Image4io\Base;
 
 class BaseController{
     public $plugin_path;

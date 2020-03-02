@@ -3,9 +3,9 @@
  * @package image4ioPlugin
  */
 
-namespace Inc\Base;
+namespace Image4io\Base;
 
-use Inc\Base\BaseController;
+use Image4io\Base\BaseController;
 
 class SettingsLink extends BaseController {
     public function register(){
