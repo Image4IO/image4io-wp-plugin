@@ -17,7 +17,9 @@ class AdminCallbacks extends BaseController{
     }
     
     public function dashboardSettingsSection(){
-        echo "If you want to use image4io plugin, you should fill out these informations from image4io console.";
+        echo "<h4>To get to use image4io plugin, you need to fill out and save API Key, API Secret and Cloudname of your Image4io Account. <br/>
+        You can find out your account informations from <a href='https://console.image4.io/'>here</a>. <br/>
+        If you don't have image4io account, you can <a href='https://console.image4.io/Auth/SignUp'>sign up</a> for free.</h4>";
     }
 
     public function image4ioApiKey($args){

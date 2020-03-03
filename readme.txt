@@ -10,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Image4io is a full-stack image manager that stores, optimizes and serves images for the web.
 
-== Description ==
+== DESCRIPTIONS ==
 
 **Image4io speeds up the images' load time: optimization, delivery, storage: all-in-one platform**
 
@@ -26,11 +26,11 @@ Benefits of image4io:
 * Increases user experience.
 * Improves SEO.
 
-= Requirements =
+= REQUIREMENTS =
 
 * To use image4io, you will need to register for a (free) [Image4io account](https://console.image4.io) to use the plugin and start speed up your wordpress website.
 
-= Overview =
+= OVERVIEW =
 
 * Increases web performance with optimized images.
 * Manages all images in one platform.
@@ -40,13 +40,13 @@ Benefits of image4io:
 * Increases user experience.
 * Improves SEO.
 
-= Image Uploads =
+= IMAGE UPLOAD =
 
-* Jpeg, png and webp formats are supported formats.
+* Jpeg, png, bmp and webp formats are supported formats.
 * Upload directly from your desktop via image4io storage console
 * Remote fetching from public URLs
 
-= Image Manipulations =
+= IMAGE MANUPLATION =
 
 You can use image4io dynamic URL structure and manuplate images. See [How it works](https://image4.io/en/how-it-works)
 
@@ -55,18 +55,18 @@ You can use image4io dynamic URL structure and manuplate images. See [How it wor
 * **Image transformation** - scale, fit, crop can be used.
 * **Image effects** - sharpen and blur can be used for creating visual design.
 
-= Image Storage =
+= IMAGE STORAGE =
 
 * All your images are stored in a highly-available image4io storages.
 * You can manage your images in image4io storage console
 
-= Image Optimization =
+= IMAGE OPTIMIZATION =
 
 * Your images are optimized via image process servers to improve image performance.
 * You can chance format,quality and transform images for your needs.
 * You can serve in next-generation image format to boost performance
 
-= Image Delivery =
+= IMAGE DELIVERY =
 
 * All your images are delivered via highly available and lightning fast multiple Content Delivery Network(CDN)
 
@@ -77,7 +77,7 @@ You can use image4io dynamic URL structure and manuplate images. See [How it wor
 * View your transformation, CDN and storage usages in dashboard.
 * You can utilize API to manage your images.
 
-= About Image4io =
+= ABOUT IMAGE4IO =
 
 Read more about the Cloudinary service:
 
@@ -92,27 +92,27 @@ Read more about the Cloudinary service:
 **Keywords**: image, images, photo, photos, picture, pictures, thumbnail, thumbnails, upload, cdn, content delivery network, transform, manipulate, effects, scale, high availability, fast, format, sharpen,
 jpg, jpeg, png, crop, resize, scale, fit, quality.
 
-== Installation ==
+== INSTALLATION ==
 
-1. Search and install the plugin through the `Install Plugins` page of your WordPress dashboard. Alternatively, upload the `image4io-plugin` folder to the `/wp-content/plugins/` directory of your wordpress site.
+1. Search and install the plugin through the `Install Plugins` page of your WordPress dashboard. Alternatively, upload the `image4io` folder to the `/wp-content/plugins/` directory of your wordpress site.
 2. Activate the Image4io plugin through the `Plugins` page of your WordPress dashboard.
 3. Configure the plugin by selecting `Image4io' on the left menu of your WordPress dashboard.
 4. Enter API Key, API Secret, Cloudname and folder that you will find in Image4io Console.
 
-== Frequently Asked Questions ==
+== FREQUENTLY ASKED QUESTIONS ==
 
 N/A
 
-== Changelog ==
+== CHANGELOG ==
 
 = 0.1.0 =
 * First release
 
-== Upgrade Notice ==
+== UPGRADE NOTICE ==
 
 N/A
 
-== Screenshots ==
+== SCREENSHOTS ==
 
 1. **Image4io Storage Console**
 2. **Usage Statistics and Dashboard**
