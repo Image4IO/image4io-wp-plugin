@@ -34,7 +34,7 @@ class Image4IOManager{
         }
         return $this->apiClient->connect();
     }
-
+/*
     public function uploadToImage4IO($dirpath , $cloudPath){
         if(!$this->isValidOptions()){
             return; //redirect to options page?
@@ -45,6 +45,14 @@ class Image4IOManager{
         
         $result=$this->apiClient->uploadImage($dirpath,$cloudPath);
         return json_decode($result);
+    }*/
+
+    public function uploadToImage4ioFromUrl($from_url,$target_path){
+        if(!$this->isValidOptions()){
+            return; //redirect to options page?
+        }
+        $result=$this->apiClient->fetch($from_url,$target_path);
+        return json_decode( $result );
     }
     
     public function getImagesByFolder($folder){

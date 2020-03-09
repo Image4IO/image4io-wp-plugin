@@ -50,7 +50,8 @@ class Image4IOApi{
     public function fetch($from,$targetPath){
 
         $args= array(
-            'headers'=>$this->getHeaders()
+            'headers'=>$this->getHeaders(),
+            'timeout'=>30
         );
         $response=wp_remote_post( $this->urlWithVersion . 'fetch?from=' . urlencode($from) . '&target_path=' . urlencode($targetPath) , $args );
         return $response['body'];
