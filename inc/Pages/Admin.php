@@ -105,17 +105,6 @@
 					'option_name'=>'image4io_settings',
 					'label_for' => 'cloudname'
 				)
-			),
-			array(
-				'id' => 'folder',
-				'title' => 'Folder',
-				'callback' => array( $this->callbacks, 'image4ioFolder' ),
-				'page' => 'image4io_plugin',
-				'section' => 'image4io_admin_dashboard_index',
-				'args' => array(
-					'option_name'=>'image4io_settings',
-					'label_for' => 'folder'
-				)
 			)
 		);
 
