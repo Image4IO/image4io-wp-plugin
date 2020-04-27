@@ -36,6 +36,7 @@
         add_action('manage_media_custom_column', array($this, 'image4io_media_column_value'), 0, 2);
         add_action('admin_footer-upload.php', array($this, 'image4io_media_lib_upload_admin_footer'));
         add_action('load-upload.php', array($this, 'image4io_media_lib_upload_action'));
+        add_filter('wp_generate_attachment_metadata',array($this,'image4io_upload_new_media_action'),1,3);
         add_filter('wp_get_attachment_url', array($this, 'fix_local_url_to_image4io'), 1, 2);
         add_filter('image_downsize', array($this, 'image4io_resize'), 1, 3);
         add_filter('the_content',array($this,'image4io_make_content_responsive'));
@@ -376,10 +377,10 @@
         $manager->setup();
         $result = $manager->uploadToImage4ioFromUrl($full_path,"/");
         
-        if(!isset($result->fetchedFile)){
+        if(!isset($result->fetchedImage)){
             return "Cannot upload to image4io server! File: " . $attachment->$post_title;
         }
-        $name=$result->fetchedFile->name;
+        $name=$result->fetchedImage->name;
         $url= $this->build_url_from_name($name);
 
         $old_url = wp_get_attachment_url($attachment_id);
@@ -395,10 +396,11 @@
     public function register_image($name, $url, $post_id, $attachment_id, $original_attachment){
         $info = pathinfo($url);
         $public_id = $info['filename'];
-        $mime_types = array('png' => 'image/png', 'jpg' => 'image/jpeg', 'bmp' => 'image/bmp');
-        $type = $mime_types[$info['extension']];
+        $mime_types = array('png' => 'image/png','jpeg' => 'image/jpeg', 'jpg' => 'image/jpeg', 'bmp' => 'image/bmp');
+        $type = $mime_types[strtolower($info['extension'])];
         
         $md = wp_get_attachment_metadata($attachment_id);
+        
         $meta = $md['image_meta'];
         $title = $original_attachment->post_title;
         $caption = $original_attachment->post_content;
@@ -721,6 +723,46 @@
                 echo "<div class='updated notice is-dismissible'><p>{$message}</p></div>";
                 return;
             }
+        }
+    }
+
+    public function image4io_upload_new_media_action($metadata,$attachment_id,$context){
+        $attachment = get_post($attachment_id);
+
+        if($context=="create"){
+
+            $values=get_option( "image4io_settings" );
+            if(!isset($values)||!isset($values["auto_upload"])||!$values["auto_upload"]){
+                return $metadata;
+            }
+            
+            $mime_type=$attachment->post_mime_type;
+            if(!preg_match( '!^image/!', $mime_type )){
+                return $metadata;
+            }
+            $full_path = $attachment->guid;
+            if (empty($full_path)) {
+                return $metadata;
+            }
+
+            $manager = new Image4IOManager;
+            $manager->setup();
+            $result = $manager->uploadToImage4ioFromUrl($full_path,"/");
+            
+            if(!isset($result->fetchedImage)){
+                return $metadata;
+            }
+            $name=$result->fetchedImage->name;
+            $url= $this->build_url_from_name($name);
+
+            $res= $this->register_image($name, $url, $attachment->post_parent, $attachment_id, $attachment);
+            if($res){
+                return wp_get_attachment_metadata($res);
+            }else{
+                return $metadata;
+            }
+        }else{
+            return $metadata;
         }
     }
  }

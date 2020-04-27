@@ -108,6 +108,15 @@ N/A
 = 0.1.0 =
 * First release
 
+= 0.2.0 =
+* Fully integrated with Media Library
+* Added Image4io upload button to upload images from Media Library
+* Added Bulk Upload button to Media Library
+
+= 0.3.0 =
+* Added an option of "Auto Loading": When you upload new images to Media Library, it will automatically upload to image4io servers if it's checked.
+* Fixed a bug when uploading images to image4io server. 
+
 == UPGRADE NOTICE ==
 
 N/A
@@ -117,5 +126,6 @@ N/A
 1. **Image4io Storage Console**
 2. **Usage Statistics and Dashboard**
 3. **Powerful live image manipulation**
-4. **Insert Image4io Image**
-5. **Simple setup**
+4. **Media Library View-1**
+5. **Media Library View-2**
+6. **Simple setup**

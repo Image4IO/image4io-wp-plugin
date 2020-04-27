@@ -11,7 +11,7 @@ class Image4IOApi{
     private $apiSecret;
 
     private $baseUrl="https://api.image4.io/";
-    private $version="v0.1";
+    private $version="v1.0";
     private $urlWithVersion;
 
     public function __construct($_key,$_secret){
@@ -29,9 +29,10 @@ class Image4IOApi{
 
     public function connect(){
         $args= array(
-            'headers'=>$this->getHeaders()
+            'headers'=>$this->getHeaders(),
+            'body'=>array('path'=>'/')
         );
-        $response=wp_remote_get( $this->urlWithVersion . 'listfolder', $args );
+        $response=wp_remote_get( $this->urlWithVersion . 'listFolder', $args );
         if($response['response']['code']==200){
             return true;
         }else{
@@ -51,9 +52,14 @@ class Image4IOApi{
 
         $args= array(
             'headers'=>$this->getHeaders(),
+            'body'=>json_encode(array(
+                'from'=>$from,
+                'targetPath'=>$targetPath,
+                'useFilename'=>true
+            )),
             'timeout'=>30
         );
-        $response=wp_remote_post( $this->urlWithVersion . 'fetch?from=' . urlencode($from) . '&target_path=' . urlencode($targetPath) , $args );
+        $response=wp_remote_post( $this->urlWithVersion . 'fetchImage' , $args );
         return $response['body'];
     }
     
