@@ -117,6 +117,9 @@ N/A
 * Added an option of "Auto Loading": When you upload new images to Media Library, it will automatically upload to image4io servers if it's checked.
 * Fixed a bug when uploading images to image4io server. 
 
+= 0.3.1 =
+* Fixed a bug when hosting server activated ssl. 
+
 == UPGRADE NOTICE ==
 
 N/A
