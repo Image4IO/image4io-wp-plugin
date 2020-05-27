@@ -36,6 +36,7 @@
         add_action('manage_media_custom_column', array($this, 'image4io_media_column_value'), 0, 2);
         add_action('admin_footer-upload.php', array($this, 'image4io_media_lib_upload_admin_footer'));
         add_action('load-upload.php', array($this, 'image4io_media_lib_upload_action'));
+        //add_action('delete_attachment',array($this,'image4io_media_delete'),1,1);
         add_filter('wp_generate_attachment_metadata',array($this,'image4io_upload_new_media_action'),1,3);
         add_filter('wp_get_attachment_url', array($this, 'fix_local_url_to_image4io'), 1, 2);
         add_filter('image_downsize', array($this, 'image4io_resize'), 1, 3);
@@ -372,6 +373,7 @@
         if (empty($full_path)) {
             return 'Unsupported attachment type!';
         }
+        $full_path = $this->update_urls_for_ssl($full_path);
 
         $manager = new Image4IOManager;
         $manager->setup();
@@ -634,41 +636,8 @@
         return array($result_url, $wanted_size['width'], $wanted_size['height'], true);
     }
 
-    public function image4io_generate_image_srcset($image_src, $image_meta, $attachment_id){
-        /*if (!isset($image_meta['image4io']) || !$image_meta['image4io']){
-            return $sources;
-        }*/
-        $sizes=$image_meta['image4io_sizes'];
-        
-        $results=array();
-        foreach($sizes as $size){
-            $result=array(
-                'url'=>$size['file'],
-                'descriptor'=>'w',
-                'value'=>$size['width'],
-            );
-            $results[$size['width']]=$result;
-        }
-        //unset($size);
-        
-        if ( ! is_array( $results ) || count( $results ) < 1 ) {
-            return false;
-        }
-
-        $srcset = '';
-        
-        foreach ( $results as $result ) {
-            $srcset .= str_replace( ' ', '%20', $result['url'] ) . ' ' . $result['value'] . $result['descriptor'] . ', ';
-        }
-        $srcset = rtrim($srcset, ', ');
-        $srcset_sizes= wp_calculate_image_sizes( array($image_meta["width"],$image_meta["height"]), $image_src, $image_meta, $attachment_id );
-        
-        preg_match('/(^.*?src=\"[^"]+")(.*)/i',$image_src,$res);
-        
-        return $res[1] . ' srcset="' . $srcset . '" sizes="' . $srcset_sizes . '"' . $res[2];
-    }
-
     public function image4io_make_content_responsive($content){
+        
         if ( ! preg_match_all( '/<img [^>]+>/', $content, $matches ) ) {
             return $content;
         }
@@ -690,6 +659,7 @@
                 }
             }
         }
+        
         if ( count( $attachment_ids ) > 1 ) {
             /*
              * Warm the object cache with post and meta information for all found
@@ -697,13 +667,43 @@
              */
             _prime_post_caches( array_keys( $attachment_ids ), false, true );
         }
-        
         foreach ( $selected_images as $image => $attachment_id ) {
             $image_meta = wp_get_attachment_metadata( $attachment_id );
-            $content    = str_replace( $image, $this->image4io_generate_image_srcset( $image, $image_meta, $attachment_id ), $content );
+            $updatedSrc=$this->image4io_generate_image_srcset( $image, $image_meta, $attachment_id );
+            $content    = str_replace( $image, $updatedSrc , $content );
         }
     
         return $content;
+    }
+    
+    public function image4io_generate_image_srcset($image_src, $image_meta, $attachment_id){
+        $sizes=$image_meta['image4io_sizes'];
+        
+        if(! is_array( $sizes ) || count( $sizes ) < 1){
+            return $image_src;
+        }
+        $results=array();
+        
+        foreach($sizes as $size){
+            $result=array(
+                'url'=>$size['file'],
+                'descriptor'=>'w',
+                'value'=>$size['width'],
+            );
+            $results[$size['width']]=$result;
+        }
+
+        $srcset = '';
+        
+        foreach ( $results as $result ) {
+            $srcset .= str_replace( ' ', '%20', $result['url'] ) . ' ' . $result['value'] . $result['descriptor'] . ', ';
+        }
+        $srcset = rtrim($srcset, ', ');
+        $srcset_sizes= wp_calculate_image_sizes( array($image_meta["width"],$image_meta["height"]), $image_src, $image_meta, $attachment_id );
+        
+        preg_match('/(^.*?src=\"[^"]+")(.*)/i',$image_src,$res);
+
+        return $res[1] . ' srcset="' . $srcset . '" sizes="' . $srcset_sizes . '"' . $res[2];
     }
 
     public function image4io_timeout_extend( $time){
@@ -745,6 +745,8 @@
                 return $metadata;
             }
 
+            $full_path = $this->update_urls_for_ssl($full_path);
+
             $manager = new Image4IOManager;
             $manager->setup();
             $result = $manager->uploadToImage4ioFromUrl($full_path,"/");
@@ -764,5 +766,32 @@
         }else{
             return $metadata;
         }
+    }
+
+    /*public function image4io_media_delete($postid){
+        $md = wp_get_attachment_metadata($attachment_id);
+        if(isset($md['image4io'])&&$md['image4io']){
+            $manager = new Image4IOManager;
+            $manager->setup();
+            $result = $manager->uploadToImage4ioFromUrl($full_path,"/");
+            var_dump($result);
+            die;
+        }
+    }*/
+
+    public function update_urls_for_ssl($url) {
+        //Correct protocol for https connections
+        list($protocol, $uri) = explode('://', $url, 2);
+        if(is_ssl()) {
+            if('http' == $protocol) {
+            $protocol = 'https';
+            }
+        } else {
+            if('https' == $protocol) {
+            $protocol = 'http';
+            }
+        }
+        
+        return $protocol.'://'.$uri;
     }
  }
