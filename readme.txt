@@ -120,6 +120,9 @@ N/A
 = 0.3.1 =
 * Fixed a bug when hosting server activated ssl. 
 
+= 0.3.2 =
+* Fixed a bug when uploading images to image4io servers. 
+
 == UPGRADE NOTICE ==
 
 N/A
