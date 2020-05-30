@@ -370,13 +370,13 @@
         }
 
         //$full_path = $attachment->guid;
-        $full_path = wp_get_original_image_url($attachment_id);
-
-        die;
+        //$full_path = wp_get_original_image_url($attachment_id);
+        $full_path=wp_get_attachment_image_src($attachment_id,"attached-image")[0];
+        
         if (empty($full_path)) {
             return 'Unsupported attachment type!';
         }
-        
+
         $full_path = $this->update_urls_for_ssl($full_path);
 
         $manager = new Image4IOManager;
