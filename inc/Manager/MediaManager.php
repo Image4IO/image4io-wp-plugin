@@ -369,10 +369,14 @@
             return 'Unsupported file type: ' . $mime_type ;
         }
 
-        $full_path = $attachment->guid;
+        //$full_path = $attachment->guid;
+        $full_path = wp_get_original_image_url($attachment_id);
+
+        die;
         if (empty($full_path)) {
             return 'Unsupported attachment type!';
         }
+        
         $full_path = $this->update_urls_for_ssl($full_path);
 
         $manager = new Image4IOManager;
