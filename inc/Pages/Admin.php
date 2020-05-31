@@ -107,6 +107,17 @@
 				)
 			),
 			array(
+				'id' => 'target_folder',
+				'title' => '<div data-tooltip-location="right" data-tooltip="Images will be uploaded to a target folder path e.g. /myWebsite ">Target Folder<span class="dashicons dashicons-info"></span></div>',
+				'callback' => array( $this->callbacks, 'image4ioTargetFolder' ),
+				'page' => 'image4io_plugin',
+				'section' => 'image4io_admin_dashboard_index',
+				'args' => array(
+					'option_name'=>'image4io_settings',
+					'label_for' => 'target_folder'
+				)
+			),
+			array(
 				'id' => 'auto_upload',
 				'title' => '<div data-tooltip-location="right" data-tooltip="If checked, all new images uploaded to the Media Library will be uploaded to image4io Storage">Auto Upload to Image4io<span class="dashicons dashicons-info"></span></div>',
 				'callback' => array( $this->callbacks, 'image4ioAutoUpload' ),

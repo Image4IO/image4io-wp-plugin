@@ -353,6 +353,11 @@
             return $error;
         }
 
+        $name=$md['image4io_name'];
+        $manager = new Image4IOManager;
+        $manager->setup();
+        $result = $manager->deleteImage($name);
+
         $this->update_image_src_all($attachment_id, $old_url, $md['original_url']);
     }
 
@@ -383,9 +388,15 @@
 
         $full_path = $this->update_urls_for_ssl($full_path);
 
+        $target_path = "/";
+        $values=get_option( "image4io_settings" );
+        if(isset($values["target_folder"])){
+            $target_path=$values["target_folder"];
+        }
+
         $manager = new Image4IOManager;
         $manager->setup();
-        $result = $manager->uploadToImage4ioFromUrl($full_path,"/");
+        $result = $manager->uploadToImage4ioFromUrl($full_path,$target_path);
         
         if(!isset($result->fetchedImage)){
             return "Cannot upload to image4io server! File: " . $attachment->$post_title;

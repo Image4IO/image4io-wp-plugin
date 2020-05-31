@@ -49,6 +49,14 @@ class AdminCallbacks extends BaseController{
         echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Your cloudname'>";
     }
 
+    public function image4ioTargetFolder($args){
+        $name=$args['label_for'];
+        $optionName=$args['option_name'];
+        $options=get_option($optionName);
+        $value=isset($options[$name])?$options[$name]:"";
+
+        echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='/'>";
+    }
 
     public function image4ioAutoUpload($args){
         $name=$args['label_for'];

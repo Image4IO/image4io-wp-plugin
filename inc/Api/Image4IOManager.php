@@ -72,4 +72,12 @@ class Image4IOManager{
         $result=$this->apiClient->listFolder($root);
         return json_decode($result);
     }
+
+    public function deleteImage($name){
+        if(!$this->isValidOptions()){
+            return; //redirect to options page?
+        }
+        $result=$this->apiClient->deleteImage($name);
+        return json_decode( $result );
+    }
 }

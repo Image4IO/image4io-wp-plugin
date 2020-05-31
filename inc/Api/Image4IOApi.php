@@ -79,12 +79,15 @@ class Image4IOApi{
         return $response['body'];
     }
 
-    public function deleteFile($name){
+    public function deleteImage($name){
         $args= array(
             'headers'=>$this->getHeaders(),
-            'method'=>'DELETE'
+            'method'=>'DELETE',
+            'body'=>json_encode(array(
+                'name'=>$name,
+            ))
         );
-        $response=wp_remote_request( $this->urlWithVersion . 'deletefile?name=' . urlencode($name), $args );
+        $response=wp_remote_request( $this->urlWithVersion . 'deleteImage', $args );
         return $response['body'];
     }
 
