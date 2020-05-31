@@ -372,6 +372,10 @@
         //$full_path = $attachment->guid;
         //$full_path = wp_get_original_image_url($attachment_id);
         $full_path=wp_get_attachment_image_src($attachment_id,"attached-image")[0];
+
+        if(preg_match('#^.*?/(https?://.*)#', $full_path, $matches)){
+            $full_path=$matches[1];
+        }
         
         if (empty($full_path)) {
             return 'Unsupported attachment type!';
