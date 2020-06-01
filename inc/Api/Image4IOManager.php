@@ -16,7 +16,7 @@ class Image4IOManager{
 
     public function setup(){
         if(!$this->isValidOptions()){
-            return; //redirect to options page?
+            return "Please set API Key, API Secret and Cloudname from image4io Console";
         }
         $values=get_option( "image4io_settings" );
         $this->apiClient=new Image4IOApi($values["api_key"],$values["api_secret"]);
@@ -28,11 +28,31 @@ class Image4IOManager{
     }
 
 
-    public function validateCredentials(){
+    public function validateCredentialsWithOptions(){
         if(!$this->isValidOptions()){
-            return; //redirect to options page?
+            return "Please set API Key, API Secret and Cloudname from image4io Console";
         }
-        return $this->apiClient->connect();
+        $values=get_option( "image4io_settings" );
+        $res=$this->apiClient->getSubscription();
+        $response=json_decode($res);
+        if($response->cloudname!=$values['cloudname']){
+            return "Cloudname is not valid. Please check your image4io cloudname.";
+        }
+    }
+    public function validateCredentials($key,$secret,$cloudname){
+        if((empty($key)||empty($secret)||empty($cloudname))){
+            return "Please set API Key, API Secret and Cloudname from image4io Console.";
+        }
+        $client=new Image4IOApi($key,$secret);
+        $canClientConnect=$client->connect();
+        if(!$canClientConnect){
+            return "API Key or API Secret is invalid. Cannot establish any connection.";
+        }
+        $res=$client->getSubscription();
+        $response=json_decode($res);
+        if($response->cloudname!=$cloudname){
+            return "Cloudname is not valid. Please check your image4io cloudname.";
+        }
     }
 /*
     public function uploadToImage4IO($dirpath , $cloudPath){

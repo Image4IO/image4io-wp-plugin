@@ -127,6 +127,9 @@ N/A
 * Fixed a bug when uploading images to image4io servers. 
 * Added an option of "Target Folder". It will configure your target folder of the image4io Storage. 
 
+= 0.3.4 =
+* Fixed a bug when uploading images to image4io servers.
+
 == UPGRADE NOTICE ==
 
 N/A

@@ -43,6 +43,8 @@
         add_filter('the_content',array($this,'image4io_make_content_responsive'));
         add_action('admin_notices',array($this,'image4io_upload_notices'));
         add_action('admin_enqueue_scripts', array($this,'mediaButtonEnqueue'));
+
+        add_action('pre_update_option_image4io_settings',array($this,'check_image4io_options'),1,3);
         
         //add_action('media_buttons', array($this, 'mediaImage4io'), 11);
         //add_action('wp_ajax_image4io_image_selected',array($this,'imageSelected'));
@@ -137,6 +139,10 @@
             $folder=esc_url($_POST['image4IOFolder']);
             $manager = new Image4IOManager;
             $manager->setup();
+            $error=$manager->validateCredentialsWithOptions();
+            if(isset($error)){
+                return $error;
+            }
             $result = $manager->getImagesByFolder($folder);
             try {
                 $result = _wp_json_sanity_check( $result, 512 );
@@ -356,6 +362,10 @@
         $name=$md['image4io_name'];
         $manager = new Image4IOManager;
         $manager->setup();
+        $error=$manager->validateCredentialsWithOptions();
+        if(isset($error)){
+            return $error;
+        }
         $result = $manager->deleteImage($name);
 
         $this->update_image_src_all($attachment_id, $old_url, $md['original_url']);
@@ -396,6 +406,10 @@
 
         $manager = new Image4IOManager;
         $manager->setup();
+        $error=$manager->validateCredentialsWithOptions();
+        if(isset($error)){
+            return $error;
+        }
         $result = $manager->uploadToImage4ioFromUrl($full_path,$target_path);
         
         if(!isset($result->fetchedImage)){
@@ -768,6 +782,10 @@
 
             $manager = new Image4IOManager;
             $manager->setup();
+            $error=$manager->validateCredentialsWithOptions();
+            if(isset($error)){
+                return $error;
+            }
             $result = $manager->uploadToImage4ioFromUrl($full_path,"/");
             
             if(!isset($result->fetchedImage)){
@@ -812,5 +830,17 @@
         }
         
         return $protocol.'://'.$uri;
+    }
+
+    public function check_image4io_options($value,$old_value,$option){
+        
+        $manager = new Image4IOManager();
+        $error=$manager->validateCredentials($value['api_key'],$value['api_secret'],$value['cloudname']);
+        if(isset($error)){
+            add_settings_error( $option, 1, $error );
+            return $old_value;
+        }else{
+            return $value;
+        }
     }
  }
