@@ -6,6 +6,7 @@
  namespace Image4io\Manager;
 
  use Image4io\Base\BaseController;
+ use Image4io\Base\Functions;
  use Image4io\Api\Image4IOManager;
 
  class MediaManager extends BaseController{
@@ -90,7 +91,7 @@
     }
 
     public function createImage4ioUrl($src,$width,$height){
-        $options=get_option("image4io_settings");
+        $options=Functions::get_image4io_option("image4io_settings");
         $cloudname=$options['cloudname'];
         //return $cloudname;
         if(!isset($cloudname)||$cloudname==""){
@@ -107,7 +108,7 @@
     }
 
     public function createImage4ioUrlWithTransformation($src,$transformation){
-        $options=get_option("image4io_settings");
+        $options=Functions::get_image4io_option("image4io_settings");
         $cloudname=$options['cloudname'];
         //return $cloudname;
         if(!isset($cloudname)||$cloudname==""){
@@ -129,7 +130,7 @@
 
     public function mediaButtonEnqueue(){
         wp_enqueue_script( 'image4io_script', $this->plugin_url . 'assets/js/image4io.js' );
-        $options=get_option( "image4io_settings");
+        $options=Functions::get_image4io_option( "image4io_settings");
         $rootFolder=array('rootFolder'=> isset($options['folder'])?$options['folder']:"/" );
         wp_localize_script( 'image4io_script', 'rootFolder', $rootFolder );
     }
@@ -179,19 +180,19 @@
                 $sizes[$s]['width'] = intval($_wp_additional_image_sizes[$s]['width']);
             } // For theme-added sizes
             else {
-                $sizes[$s]['width'] = get_option("{$s}_size_w");
+                $sizes[$s]['width'] = Functions::get_image4io_option("{$s}_size_w");
             } // For default sizes set in options
             if (isset($_wp_additional_image_sizes[$s]['height'])) {
                 $sizes[$s]['height'] = intval($_wp_additional_image_sizes[$s]['height']);
             } // For theme-added sizes
             else {
-                $sizes[$s]['height'] = get_option("{$s}_size_h");
+                $sizes[$s]['height'] = Functions::get_image4io_option("{$s}_size_h");
             } // For default sizes set in options
             if (isset($_wp_additional_image_sizes[$s]['crop'])) {
                 $sizes[$s]['crop'] = intval($_wp_additional_image_sizes[$s]['crop']);
             } // For theme-added sizes
             else {
-                $sizes[$s]['crop'] = get_option("{$s}_crop");
+                $sizes[$s]['crop'] = Functions::get_image4io_option("{$s}_crop");
             } // For default sizes set in options
         }
 
@@ -399,7 +400,7 @@
         $full_path = $this->update_urls_for_ssl($full_path);
 
         $target_path = "/";
-        $values=get_option( "image4io_settings" );
+        $values=Functions::get_image4io_option( "image4io_settings" );
         if(isset($values["target_folder"])){
             $target_path=$values["target_folder"];
         }
@@ -582,7 +583,7 @@
     }
 
     public function build_url_from_name($name){
-        $values=get_option( "image4io_settings" );
+        $values=Functions::get_image4io_option( "image4io_settings" );
         if(!isset($values)||!isset($values["cloudname"])){
             return null;
         }
@@ -764,7 +765,7 @@
 
         if($context=="create"){
 
-            $values=get_option( "image4io_settings" );
+            $values=Functions::get_image4io_option( "image4io_settings" );
             if(!isset($values)||!isset($values["auto_upload"])||!$values["auto_upload"]){
                 return $metadata;
             }

@@ -29,6 +29,17 @@ if(file_exists(dirname(__FILE__).'/vendor/autoload.php')){
     require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
+if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+    // Makes sure the plugin is defined before trying to use it
+    require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+}
+if (is_plugin_active_for_network('image4io/image4io.php')) {  
+    define("THIS_PLUGIN_NETWORK_ACTIVATED", true);
+}
+else {
+    define("THIS_PLUGIN_NETWORK_ACTIVATED", false);
+}
+
 function activate_image4io_plugin(){
     Image4io\Base\Activate::activate();
 }

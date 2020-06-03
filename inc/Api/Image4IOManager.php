@@ -18,12 +18,12 @@ class Image4IOManager{
         if(!$this->isValidOptions()){
             return "Please set API Key, API Secret and Cloudname from image4io Console";
         }
-        $values=get_option( "image4io_settings" );
+        $values=Functions::get_image4io_option( "image4io_settings" );
         $this->apiClient=new Image4IOApi($values["api_key"],$values["api_secret"]);
     }
 
     public function isValidOptions(){
-        $values=get_option( "image4io_settings" );
+        $values=Functions::get_image4io_option( "image4io_settings" );
         return (isset($values)&&isset($values["api_key"])&&isset($values["api_secret"])&&isset($values["cloudname"]));
     }
 
@@ -32,7 +32,7 @@ class Image4IOManager{
         if(!$this->isValidOptions()){
             return "Please set API Key, API Secret and Cloudname from image4io Console";
         }
-        $values=get_option( "image4io_settings" );
+        $values=Functions::get_image4io_option( "image4io_settings" );
         $res=$this->apiClient->getSubscription();
         $response=json_decode($res);
         if($response->cloudname!=$values['cloudname']){

@@ -25,7 +25,7 @@ class AdminCallbacks extends BaseController{
     public function image4ioApiKey($args){
         $name=$args['label_for'];
         $optionName=$args['option_name'];
-        $options=get_option($optionName);
+        $options=Functions::get_image4io_option($optionName);
         $value=isset($options[$name])?$options[$name]:"";
 
         echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Your API Key'>";
@@ -34,7 +34,7 @@ class AdminCallbacks extends BaseController{
     public function image4ioApiSecret($args){
         $name=$args['label_for'];
         $optionName=$args['option_name'];
-        $options=get_option($optionName);
+        $options=Functions::get_image4io_option($optionName);
         $value=isset($options[$name])?$options[$name]:"";
         
         echo "<input type='password' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Your API Secret'>";
@@ -43,7 +43,7 @@ class AdminCallbacks extends BaseController{
     public function image4ioCloudname($args){
         $name=$args['label_for'];
         $optionName=$args['option_name'];
-        $options=get_option($optionName);
+        $options=Functions::get_image4io_option($optionName);
         $value=isset($options[$name])?$options[$name]:"";
 
         echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='Your cloudname'>";
@@ -52,7 +52,7 @@ class AdminCallbacks extends BaseController{
     public function image4ioTargetFolder($args){
         $name=$args['label_for'];
         $optionName=$args['option_name'];
-        $options=get_option($optionName);
+        $options=Functions::get_image4io_option($optionName);
         $value=isset($options[$name])?$options[$name]:"";
 
         echo "<input type='text' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='$value' placeholder='/'>";
@@ -61,7 +61,7 @@ class AdminCallbacks extends BaseController{
     public function image4ioAutoUpload($args){
         $name=$args['label_for'];
         $optionName=$args['option_name'];
-        $options=get_option($optionName);
+        $options=Functions::get_image4io_option($optionName);
         $value=isset($options[$name])?$options[$name]:0;
 
         echo "<input type='checkbox' id='$name' class='regular-text' name='" . $optionName . "[" . $name . "]' value='1' ". checked( 1, $value, false )  ." >";
