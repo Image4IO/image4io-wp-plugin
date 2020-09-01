@@ -49,6 +49,8 @@
         //add_action('media_buttons', array($this, 'mediaImage4io'), 11);
         //add_action('wp_ajax_image4io_image_selected',array($this,'imageSelected'));
         //add_action('wp_ajax_image4io_model',array($this, 'getImagesByFolder'));
+        add_action('wp_ajax_image4io_migrate_from',array($this,'migrate_from_image4io'));
+        add_action('wp_ajax_image4io_migrate_to',array($this,'migrate_to_image4io'));
 
         add_filter( 'http_request_timeout', array($this, 'image4io_timeout_extend'));
     }
@@ -235,6 +237,7 @@
                     if(buttons.length>0){
                         buttons.each(function() {
                             $('<option>').val('image4io_upload').text('Upload to Image4io').appendTo(this);
+                            $('<option>').val('image4io_undo').text('Migrate from Image4io').appendTo(this);
                         });
                     }else{
                         setTimeout(add_bulk_option, 10);
@@ -269,6 +272,27 @@
             });
         </script>
         <?php
+    }
+    public function migrate_from_image4io(){
+        $args = array('post_type'=>'attachment','numberposts'=>null,'post_status'=>null);
+        $attachments = get_posts($args);
+        if($attachments){
+            foreach($attachments as $attachment){
+                $this->undo_image4io($attachment->ID);
+            }
+        }
+        wp_die();
+    }
+
+    public function migrate_to_image4io(){
+        $args = array('post_type'=>'attachment','numberposts'=>null,'post_status'=>null);
+        $attachments = get_posts($args);
+        if($attachments){
+            foreach($attachments as $attachment){
+                $this->upload_to_image4io($attachment->ID);
+            }
+        }
+        wp_die();
     }
 
     public function image4io_media_lib_upload_action(){
@@ -338,6 +362,35 @@
                 $sendback=add_query_arg( array('image4io_message'=>urlencode($message),'image4io_error'=>true),$sendback );
             }else{
                 $message="All selected images have uploaded to image4io successfully.";
+                $sendback=add_query_arg(array('image4io_message'=>urlencode($message)),$sendback);
+            }
+            wp_redirect($sendback);
+            exit();
+        }else if($action=='image4io_undo'){
+            check_admin_referer('bulk-media');
+            $post_ids = array();
+            if (isset($_REQUEST['media'])) {
+                $post_ids = $_REQUEST['media'];
+            } elseif (isset($_REQUEST['ids'])) {
+                $post_ids = explode(',', $_REQUEST['ids']);
+            }
+            $results=array();
+            foreach($post_ids as $k=>$post_id){
+                $res=$this->undo_image4io($post_id);
+                if($res){
+                    $results[$post_id]=$res;
+                }
+            }
+            $message="";
+            if(count($results)>0){
+                foreach($results as $id=>$result){
+                    $message .= " Filename: " . $id . "; Error: " . $result . "\n";
+                }
+                $message=rtrim($message,'\n');
+                $message= "There are some errors while migrating from image4io.\n" . $message;
+                $sendback=add_query_arg( array('image4io_message'=>urlencode($message),'image4io_error'=>true),$sendback );
+            }else{
+                $message="All selected images have migrated from image4io successfully.";
                 $sendback=add_query_arg(array('image4io_message'=>urlencode($message)),$sendback);
             }
             wp_redirect($sendback);

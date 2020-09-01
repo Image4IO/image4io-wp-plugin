@@ -130,6 +130,9 @@ N/A
 = 0.3.4 =
 * Fixed a bug when uploading images to image4io servers.
 
+= 0.4.0 =
+* Added migration section to settings page for quick integration with image4io.
+
 == UPGRADE NOTICE ==
 
 N/A

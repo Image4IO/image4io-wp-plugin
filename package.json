@@ -1,6 +1,6 @@
 {
   "name": "image4io",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "image4io Wordpress Plugin. Speeds up the images' load time: image optimization, image CDN and image storage, all-in-one platform.",
   "main": "index.js",
   "scripts": {
