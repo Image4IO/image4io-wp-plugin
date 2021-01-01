@@ -33,7 +33,7 @@
   </table>
 </div>
 <div id="loadingModal" style="display:none;">
-  <img src="<?php echo plugin_dir_url(dirname(__FILE__, 2)) ?>image4io/assets/img/ajax-loader.gif" class="center-img">
+  <img src="<?php echo plugin_dir_url(dirname(__FILE__, 2)) ?>image4io-wp-plugin/assets/img/ajax-loader.gif" class="center-img">
 </div>
 <style>
   [data-tooltip] {

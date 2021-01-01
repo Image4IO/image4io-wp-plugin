@@ -3,7 +3,7 @@ Contributors: image4io
 Tags: image, images, gallery, photo, photos, picture, pictures, thumbnail, upload, admin, administration, api, flickr, integration, manage, mobile, page, pages, post, social-media
 Requires at least: 3.0
 Requires PHP: 5.6
-Tested up to: 5.3.2
+Tested up to: 5.6
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -132,6 +132,9 @@ N/A
 
 = 0.4.0 =
 * Added migration section to settings page for quick integration with image4io.
+
+= 0.4.1 =
+* Fixed a bug when showing images from Media Library and Post Edit screens.
 
 == UPGRADE NOTICE ==
 

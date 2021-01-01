@@ -674,10 +674,13 @@
 
             $wanted_size = $available_sizes[$size];
             $crop = $wanted_size['crop'];
-        } elseif (is_array($size)) {
+        } else if (is_array($size)) {
             $wanted_size = array('width' => $size[0], 'height' => $size[1]);
             $crop = false;
-        } else {
+        } else if(is_int($size)){
+            $wanted_size = array('width'=> $size,'height'=>$size);
+            //return false;
+        }else{
             // Unsupported argument
             return false;
         }
@@ -706,8 +709,18 @@
         }*/
         //preg_match('/^.+?[^\/:](?=[?\/]|$)/', $input_line, $output_array);
         //$url="https://cdn.image4.io/i4io/f_auto,h_450,w_900/692df81d-227f-46d5-aed3-5ec2ff76543a.png";
-        $parsed_url=explode('/',$url);
+        $parsed_url=parse_url($url);
+        $parsed_url=explode('/',$parsed_url["path"]);
+        
         $result_url="";
+        if(count($parsed_url)==4){
+            $result_url="https://cdn.image4.io/" . $parsed_url[1] . "/f_auto,c_fit,w_" . $wanted_size['width'] . "/" . $parsed_url[3];
+        }else if(count($parsed_url)==3){
+            $result_url="https://cdn.image4.io/" . $parsed_url[1] . "/f_auto,c_fit,w_". $wanted_size['width'] . "/" . $parsed_url[2];
+        }else{
+            return false;
+        }
+        /*
         foreach($parsed_url as $idx=>$part){
             if($idx==4){
                 //replace with new one
@@ -718,7 +731,7 @@
                 }
             }
             $result_url=$result_url . $part . '/';
-        }
+        }*/
         return array($result_url, $wanted_size['width'], $wanted_size['height'], true);
     }
 

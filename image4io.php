@@ -7,7 +7,7 @@ Plugin Name: image4io-Image Optimization, CDN, Storage
 Plugin URI: https://github.com/Image4IO/image4io-wp-plugin
 Description: Speeds up the images' load time: image optimization, image CDN and image storage, all-in-one platform. To get started: activate the image4io plugin and then go to your Image4io Settings page to set up your credentials.
 Author: image4io
-Version: 0.4.0
+Version: 0.4.1
 Author URI: https://image4.io
 */
 
